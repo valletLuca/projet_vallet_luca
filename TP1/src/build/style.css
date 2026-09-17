@@ -1,0 +1,210 @@
+/* ===== Base ===== */
+:root {
+    --bleu: #1d4ed8;
+    --bleu-fonce: #1e3a8a;
+    --texte: #1f2937;
+    --texte-clair: #6b7280;
+    --bordure: #d1d5db;
+    --fond: #eef2f7;
+    --rouge: #b91c1c;
+    --rouge-clair: #fee2e2;
+    --vert: #166534;
+    --vert-clair: #dcfce7;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: var(--texte);
+    background-color: var(--fond);
+    line-height: 1.5;
+}
+
+/* ===== Centrage de la page ===== */
+.page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 16px;
+}
+
+.card {
+    width: 100%;
+    max-width: 640px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 32px;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.12);
+}
+
+h1 {
+    margin: 0 0 8px;
+    font-size: 1.6rem;
+    color: var(--bleu-fonce);
+}
+
+.sous-titre {
+    margin: 0 0 24px;
+    color: var(--texte-clair);
+    font-size: 0.9rem;
+}
+
+/* ===== Champs du formulaire ===== */
+.champ {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 16px;
+    flex: 1;
+}
+
+label {
+    margin-bottom: 6px;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+input {
+    width: 100%;
+    padding: 10px 12px;
+    font-size: 1rem;
+    font-family: inherit;
+    color: var(--texte);
+    border: 1px solid var(--bordure);
+    border-radius: 8px;
+    background-color: #fff;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input:focus {
+    outline: none;
+    border-color: var(--bleu);
+    box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.15);
+}
+
+/* Champ signalé en erreur par script.js */
+input.champ-invalide {
+    border-color: var(--rouge);
+    background-color: #fff7f7;
+}
+
+/* Deux champs côte à côte sur grand écran */
+.ligne {
+    display: flex;
+    gap: 16px;
+}
+
+/* ===== Bouton ===== */
+.bouton {
+    width: 100%;
+    margin-top: 8px;
+    padding: 12px 16px;
+    font-size: 1rem;
+    font-family: inherit;
+    font-weight: 600;
+    color: #ffffff;
+    background-color: var(--bleu);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.bouton:hover {
+    background-color: var(--bleu-fonce);
+}
+
+.bouton:focus-visible {
+    outline: 3px solid rgba(29, 78, 216, 0.4);
+    outline-offset: 2px;
+}
+
+.bouton.secondaire {
+    color: var(--bleu);
+    background-color: #ffffff;
+    border: 1px solid var(--bleu);
+    margin-top: 24px;
+}
+
+.bouton.secondaire:hover {
+    background-color: #eff4ff;
+}
+
+/* ===== Messages ===== */
+.message {
+    padding: 12px 14px;
+    margin-bottom: 16px;
+    border-radius: 8px;
+    font-size: 0.92rem;
+    font-weight: 500;
+}
+
+.message.erreur {
+    color: var(--rouge);
+    background-color: var(--rouge-clair);
+    border: 1px solid #fca5a5;
+}
+
+.message.succes {
+    color: var(--vert);
+    background-color: var(--vert-clair);
+    border: 1px solid #86efac;
+}
+
+/* ===== Page récapitulative ===== */
+.recapitulatif {
+    margin: 0;
+}
+
+.recap-ligne {
+    display: flex;
+    gap: 16px;
+    padding: 10px 0;
+    border-bottom: 1px solid #eef2f7;
+}
+
+.recap-ligne:last-child {
+    border-bottom: none;
+}
+
+.recapitulatif dt {
+    flex: 0 0 40%;
+    font-weight: 600;
+    color: var(--texte-clair);
+}
+
+.recapitulatif dd {
+    flex: 1;
+    margin: 0;
+    word-break: break-word;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 540px) {
+    .card {
+        padding: 22px;
+    }
+
+    h1 {
+        font-size: 1.35rem;
+    }
+
+    /* Les champs côte à côte passent l'un sous l'autre */
+    .ligne {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .recap-ligne {
+        flex-direction: column;
+        gap: 2px;
+    }
+
+    .recapitulatif dt {
+        flex: none;
+    }
+}

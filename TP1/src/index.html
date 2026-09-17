@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TP 01 — Inscription</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <main class="page">
+
+        <!-- ============ Formulaire d'inscription ============ -->
+        <section class="card" id="carte-formulaire">
+            <h1>Créer un compte</h1>
+            <p class="sous-titre">Tous les champs sont obligatoires.</p>
+
+            <!-- novalidate : la validation est entièrement gérée par script.js -->
+            <form id="formulaire-inscription" novalidate>
+
+                <div class="champ">
+                    <label for="login">Login</label>
+                    <input type="text" id="login" name="login" required autocomplete="username">
+                </div>
+
+                <div class="champ">
+                    <label for="motdepasse">Mot de passe</label>
+                    <input type="password" id="motdepasse" name="motdepasse" required autocomplete="new-password">
+                </div>
+
+                <div class="champ">
+                    <label for="confirmation">Confirmation du mot de passe</label>
+                    <input type="password" id="confirmation" name="confirmation" required autocomplete="new-password">
+                </div>
+
+                <div class="ligne">
+                    <div class="champ">
+                        <label for="nom">Nom</label>
+                        <input type="text" id="nom" name="nom" required autocomplete="family-name">
+                    </div>
+
+                    <div class="champ">
+                        <label for="prenom">Prénom</label>
+                        <input type="text" id="prenom" name="prenom" required autocomplete="given-name">
+                    </div>
+                </div>
+
+                <div class="champ">
+                    <label for="adresse">Adresse</label>
+                    <input type="text" id="adresse" name="adresse" required autocomplete="street-address">
+                </div>
+
+                <div class="champ">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required autocomplete="email">
+                </div>
+
+                <div class="ligne">
+                    <div class="champ">
+                        <label for="telephone">Téléphone</label>
+                        <input type="text" id="telephone" name="telephone" required autocomplete="tel">
+                    </div>
+
+                    <div class="champ">
+                        <label for="naissance">Date de naissance</label>
+                        <input type="date" id="naissance" name="naissance" required autocomplete="bday">
+                    </div>
+                </div>
+
+                <!-- Zone des messages d'erreur, remplie par script.js -->
+                <div id="message-erreur" class="message erreur" role="alert" hidden></div>
+
+                <button type="submit" class="bouton">S'inscrire</button>
+            </form>
+        </section>
+
+        <!-- ============ Page récapitulative ============ -->
+        <section class="card" id="carte-recapitulatif" hidden>
+            <h1>Inscription confirmée</h1>
+            <div class="message succes">Votre compte a bien été créé.</div>
+
+            <dl class="recapitulatif">
+                <div class="recap-ligne">
+                    <dt>Login</dt>
+                    <dd id="recap-login"></dd>
+                </div>
+                <div class="recap-ligne">
+                    <dt>Nom</dt>
+                    <dd id="recap-nom"></dd>
+                </div>
+                <div class="recap-ligne">
+                    <dt>Prénom</dt>
+                    <dd id="recap-prenom"></dd>
+                </div>
+                <div class="recap-ligne">
+                    <dt>Adresse</dt>
+                    <dd id="recap-adresse"></dd>
+                </div>
+                <div class="recap-ligne">
+                    <dt>Email</dt>
+                    <dd id="recap-email"></dd>
+                </div>
+                <div class="recap-ligne">
+                    <dt>Téléphone</dt>
+                    <dd id="recap-telephone"></dd>
+                </div>
+                <div class="recap-ligne">
+                    <dt>Date de naissance</dt>
+                    <dd id="recap-naissance"></dd>
+                </div>
+            </dl>
+
+            <button type="button" class="bouton secondaire" id="bouton-retour">Modifier mes informations</button>
+        </section>
+
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
