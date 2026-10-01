@@ -1,0 +1,28 @@
+<div class="confirmation">
+  <svg class="confirmation__icon" viewBox="0 0 52 52" aria-hidden="true">
+    <circle class="confirmation__circle" cx="26" cy="26" r="24" />
+    <path class="confirmation__check" d="M15 27l7 7 15-16" />
+  </svg>
+
+  <h1 class="confirmation__title">Bienvenue, {{ user.firstName }} !</h1>
+  <p class="confirmation__subtitle">Votre compte a bien été créé.</p>
+
+  <dl class="summary">
+    <div class="summary__row">
+      <dt>Nom complet</dt>
+      <dd>{{ user.firstName }} {{ user.lastName }}</dd>
+    </div>
+    <div class="summary__row">
+      <dt>Login</dt>
+      <dd>{{ user.login }}</dd>
+    </div>
+    <div class="summary__row">
+      <dt>Email</dt>
+      <dd>{{ user.email }}</dd>
+    </div>
+  </dl>
+
+  <button type="button" class="confirmation__restart" (click)="restart.emit()">
+    Recommencer
+  </button>
+</div>

@@ -1,0 +1,69 @@
+// Design tokens
+:root {
+  --color-bg: #f4f6fa;
+  --color-surface: #ffffff;
+  --color-border: #e2e6ee;
+  --color-border-strong: #c5ccd9;
+  --color-text: #161b2e;
+  --color-muted: #667085;
+
+  --color-accent: #4f46e5;
+  --color-accent-hover: #4338ca;
+  --color-accent-soft: #eef0ff;
+  --color-accent-ring: rgb(79 70 229 / 0.16);
+
+  --color-danger: #d92d20;
+  --color-danger-ring: rgb(217 45 32 / 0.14);
+  --color-warning: #f79009;
+  --color-info: #2e90fa;
+  --color-success: #12b76a;
+
+  --radius: 16px;
+  --radius-sm: 10px;
+  --shadow: 0 1px 2px rgb(16 24 40 / 0.04), 0 24px 48px -12px rgb(16 24 40 / 0.12);
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --font: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+}
+
+body {
+  font-family: var(--font);
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgb(79 70 229 / 0.1), transparent 70%),
+    radial-gradient(circle, rgb(22 27 46 / 0.07) 1px, transparent 1px);
+  background-size:
+    100% 100%,
+    22px 22px;
+  -webkit-font-smoothing: antialiased;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0s !important;
+    transition-duration: 0.01ms !important;
+  }
+}

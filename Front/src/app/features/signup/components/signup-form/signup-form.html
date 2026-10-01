@@ -1,0 +1,233 @@
+<form #form="ngForm" (ngSubmit)="onSubmit()" class="signup-form" [attr.data-direction]="direction">
+  <!-- Étape 1 : Identité -->
+  <fieldset
+    ngModelGroup="identity"
+    #identity="ngModelGroup"
+    class="step"
+    data-step="0"
+    [class.step--active]="currentStep === 0"
+  >
+    <legend class="step__legend">
+      <span class="step__title">{{ steps[0].title }}</span>
+      <span class="step__description">{{ steps[0].description }}</span>
+    </legend>
+
+    <app-form-field
+      label="Prénom"
+      fieldId="firstName"
+      [control]="firstName"
+      [messages]="{ required: 'Le prénom est requis.' }"
+    >
+      <input
+        id="firstName"
+        name="firstName"
+        type="text"
+        class="field__input"
+        placeholder=" "
+        autocomplete="given-name"
+        required
+        [(ngModel)]="model.firstName"
+        #firstName="ngModel"
+        [attr.aria-invalid]="firstName.invalid && firstName.touched"
+        aria-describedby="firstName-error"
+      />
+    </app-form-field>
+
+    <app-form-field
+      label="Nom"
+      fieldId="lastName"
+      [control]="lastName"
+      [messages]="{ required: 'Le nom est requis.' }"
+    >
+      <input
+        id="lastName"
+        name="lastName"
+        type="text"
+        class="field__input"
+        placeholder=" "
+        autocomplete="family-name"
+        required
+        [(ngModel)]="model.lastName"
+        #lastName="ngModel"
+        [attr.aria-invalid]="lastName.invalid && lastName.touched"
+        aria-describedby="lastName-error"
+      />
+    </app-form-field>
+  </fieldset>
+
+  <!-- Étape 2 : Compte -->
+  <fieldset
+    ngModelGroup="account"
+    #account="ngModelGroup"
+    class="step"
+    data-step="1"
+    [class.step--active]="currentStep === 1"
+  >
+    <legend class="step__legend">
+      <span class="step__title">{{ steps[1].title }}</span>
+      <span class="step__description">{{ steps[1].description }}</span>
+    </legend>
+
+    <app-form-field
+      label="Adresse email"
+      fieldId="email"
+      [control]="email"
+      [messages]="{ required: 'L\'email est requis.', email: 'Le format de l\'email est invalide.' }"
+    >
+      <input
+        id="email"
+        name="email"
+        type="email"
+        class="field__input"
+        placeholder=" "
+        autocomplete="email"
+        required
+        email
+        [(ngModel)]="model.email"
+        #email="ngModel"
+        [attr.aria-invalid]="email.invalid && email.touched"
+        aria-describedby="email-error"
+      />
+    </app-form-field>
+
+    <app-form-field
+      label="Login"
+      fieldId="login"
+      [control]="login"
+      [messages]="{ required: 'Le login est requis.' }"
+    >
+      <input
+        id="login"
+        name="login"
+        type="text"
+        class="field__input"
+        placeholder=" "
+        autocomplete="username"
+        required
+        [(ngModel)]="model.login"
+        #login="ngModel"
+        [attr.aria-invalid]="login.invalid && login.touched"
+        aria-describedby="login-error"
+      />
+    </app-form-field>
+  </fieldset>
+
+  <!-- Étape 3 : Sécurité -->
+  <fieldset
+    ngModelGroup="security"
+    #security="ngModelGroup"
+    class="step"
+    data-step="2"
+    [class.step--active]="currentStep === 2"
+  >
+    <legend class="step__legend">
+      <span class="step__title">{{ steps[2].title }}</span>
+      <span class="step__description">{{ steps[2].description }}</span>
+    </legend>
+
+    <app-form-field
+      label="Mot de passe"
+      fieldId="password"
+      [control]="password"
+      [messages]="{
+        required: 'Le mot de passe est requis.',
+        passwordRules: 'Le mot de passe ne respecte pas toutes les règles.',
+      }"
+    >
+      <input
+        id="password"
+        name="password"
+        class="field__input"
+        placeholder=" "
+        autocomplete="new-password"
+        required
+        appPasswordRules
+        [type]="showPassword ? 'text' : 'password'"
+        [(ngModel)]="model.password"
+        #password="ngModel"
+        [attr.aria-invalid]="password.invalid && password.touched"
+        aria-describedby="password-error"
+      />
+      <button
+        type="button"
+        class="field__toggle"
+        [attr.aria-label]="showPassword ? 'Masquer le mot de passe' : 'Afficher le mot de passe'"
+        [attr.aria-pressed]="showPassword"
+        (click)="showPassword = !showPassword"
+      >
+        <ng-container *ngTemplateOutlet="eyeIcon; context: { $implicit: showPassword }" />
+      </button>
+    </app-form-field>
+
+    <app-password-strength [password]="model.password" />
+
+    <app-form-field
+      label="Confirmation du mot de passe"
+      fieldId="passwordConfirm"
+      [control]="passwordConfirm"
+      [messages]="{
+        required: 'Merci de confirmer le mot de passe.',
+        passwordMismatch: 'Les mots de passe ne correspondent pas.',
+      }"
+    >
+      <!-- [appMatchPassword] est placé avant aria-invalid : la validité doit être à jour avant d'être lue -->
+      <input
+        id="passwordConfirm"
+        name="passwordConfirm"
+        class="field__input"
+        placeholder=" "
+        autocomplete="new-password"
+        required
+        [appMatchPassword]="model.password"
+        [type]="showPasswordConfirm ? 'text' : 'password'"
+        [(ngModel)]="model.passwordConfirm"
+        #passwordConfirm="ngModel"
+        [attr.aria-invalid]="passwordConfirm.invalid && passwordConfirm.touched"
+        aria-describedby="passwordConfirm-error"
+      />
+      <button
+        type="button"
+        class="field__toggle"
+        [attr.aria-label]="
+          showPasswordConfirm ? 'Masquer la confirmation' : 'Afficher la confirmation'
+        "
+        [attr.aria-pressed]="showPasswordConfirm"
+        (click)="showPasswordConfirm = !showPasswordConfirm"
+      >
+        <ng-container *ngTemplateOutlet="eyeIcon; context: { $implicit: showPasswordConfirm }" />
+      </button>
+    </app-form-field>
+  </fieldset>
+
+  @let stepGroups = [identity, account, security];
+  <div class="actions">
+    @if (currentStep > 0) {
+      <button type="button" class="btn btn--ghost" (click)="previous()">
+        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3.5L5.5 8l4.5 4.5" /></svg>
+        Retour
+      </button>
+    }
+
+    @if (isLastStep) {
+      <button type="submit" class="btn btn--primary" [disabled]="form.invalid">
+        Créer mon compte
+      </button>
+    } @else {
+      <button type="submit" class="btn btn--primary" [disabled]="stepGroups[currentStep].invalid">
+        Suivant
+        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3.5L10.5 8 6 12.5" /></svg>
+      </button>
+    }
+  </div>
+</form>
+
+<ng-template #eyeIcon let-visible>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    @if (visible) {
+      <path d="M3 3l18 18M10.6 10.6a2 2 0 002.8 2.8M9.9 5.1A9.8 9.8 0 0112 5c5 0 9 4.5 10 7a12.7 12.7 0 01-3.2 4.3M6.6 6.6A12.8 12.8 0 002 12c1 2.5 5 7 10 7a9.8 9.8 0 005.4-1.6" />
+    } @else {
+      <path d="M2 12c1-2.5 5-7 10-7s9 4.5 10 7c-1 2.5-5 7-10 7S3 14.5 2 12z" />
+      <circle cx="12" cy="12" r="3" />
+    }
+  </svg>
+</ng-template>

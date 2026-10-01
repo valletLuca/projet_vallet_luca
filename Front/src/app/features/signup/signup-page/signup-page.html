@@ -1,0 +1,25 @@
+<main class="page">
+  <section class="card">
+    @if (result(); as user) {
+      <app-signup-confirmation [user]="user" (restart)="onRestart()" />
+    } @else {
+      <header class="card__header">
+        <span class="card__eyebrow">Étape {{ currentStep() + 1 }} sur {{ steps.length }}</span>
+        <h1 class="card__title">Créer un compte</h1>
+      </header>
+
+      <app-stepper-header
+        [steps]="steps"
+        [currentStep]="currentStep()"
+        (stepSelect)="onStepChange($event)"
+      />
+
+      <app-signup-form
+        [steps]="steps"
+        [currentStep]="currentStep()"
+        (stepChange)="onStepChange($event)"
+        (submitted)="onSubmitted($event)"
+      />
+    }
+  </section>
+</main>

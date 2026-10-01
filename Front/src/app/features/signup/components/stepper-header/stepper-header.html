@@ -1,0 +1,32 @@
+<nav class="stepper" aria-label="Progression de l'inscription">
+  <div class="stepper__track" [style.left.%]="trackInset" [style.right.%]="trackInset">
+    <div class="stepper__fill" [style.width.%]="progress"></div>
+  </div>
+
+  <ol class="stepper__list" [style.grid-template-columns]="'repeat(' + steps.length + ', 1fr)'">
+    @for (step of steps; track step.label; let i = $index) {
+      <li
+        class="stepper__item"
+        [class.stepper__item--done]="i < currentStep"
+        [class.stepper__item--current]="i === currentStep"
+      >
+        <button
+          type="button"
+          class="stepper__button"
+          [disabled]="i >= currentStep"
+          [attr.aria-current]="i === currentStep ? 'step' : null"
+          (click)="select(i)"
+        >
+          <span class="stepper__dot">
+            @if (i < currentStep) {
+              <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7" /></svg>
+            } @else {
+              {{ i + 1 }}
+            }
+          </span>
+          <span class="stepper__label">{{ step.label }}</span>
+        </button>
+      </li>
+    }
+  </ol>
+</nav>

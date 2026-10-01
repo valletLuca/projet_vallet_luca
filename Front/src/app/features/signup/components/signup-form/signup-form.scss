@@ -1,0 +1,131 @@
+:host {
+  display: block;
+}
+
+.step {
+  display: none;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+
+  &--active {
+    display: block;
+    animation: step-in-forward 0.32s var(--ease) both;
+
+    [data-direction='backward'] & {
+      animation-name: step-in-backward;
+    }
+  }
+}
+
+.step__legend {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 20px;
+  padding: 0;
+}
+
+.step__title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.step__description {
+  font-size: 14px;
+  color: var(--color-muted);
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 12px;
+
+  .btn--primary {
+    flex: 1;
+  }
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 48px;
+  padding: 0 20px;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  border: 0;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition:
+    background-color 0.2s var(--ease),
+    box-shadow 0.2s var(--ease),
+    transform 0.1s var(--ease);
+
+  svg {
+    width: 16px;
+    height: 16px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  &:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 4px var(--color-accent-ring);
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(1px);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+}
+
+.btn--primary {
+  color: #fff;
+  background: var(--color-accent);
+  box-shadow: 0 1px 2px rgb(16 24 40 / 0.1), inset 0 1px 0 rgb(255 255 255 / 0.12);
+
+  &:hover:not(:disabled) {
+    background: var(--color-accent-hover);
+  }
+
+  &:disabled {
+    color: var(--color-muted);
+    background: var(--color-border);
+    box-shadow: none;
+  }
+}
+
+.btn--ghost {
+  color: var(--color-text);
+  background: transparent;
+  border: 1.5px solid var(--color-border);
+
+  &:hover {
+    background: var(--color-bg);
+  }
+}
+
+@keyframes step-in-forward {
+  from {
+    opacity: 0;
+    transform: translateX(24px);
+  }
+}
+
+@keyframes step-in-backward {
+  from {
+    opacity: 0;
+    transform: translateX(-24px);
+  }
+}

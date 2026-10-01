@@ -1,0 +1,123 @@
+app-form-field {
+  display: block;
+}
+
+.field__control {
+  position: relative;
+}
+
+.field__input {
+  width: 100%;
+  height: 56px;
+  padding: 22px 16px 6px;
+  font: inherit;
+  font-size: 15px;
+  color: var(--color-text);
+  background: var(--color-surface);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  outline: none;
+  transition:
+    border-color 0.2s var(--ease),
+    box-shadow 0.2s var(--ease);
+
+  &:hover {
+    border-color: var(--color-border-strong);
+  }
+
+  &:focus {
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 4px var(--color-accent-ring);
+  }
+
+  // Laisse la place au bouton « afficher le mot de passe »
+  &:has(+ .field__toggle) {
+    padding-right: 52px;
+  }
+}
+
+.field__label {
+  position: absolute;
+  left: 17px;
+  top: 18px;
+  font-size: 15px;
+  color: var(--color-muted);
+  pointer-events: none;
+  transform-origin: left top;
+  transition:
+    transform 0.2s var(--ease),
+    color 0.2s var(--ease);
+}
+
+// Label flottant : champ actif ou rempli (placeholder=" " sur l'input)
+.field__control:focus-within .field__label,
+.field__control:has(.field__input:not(:placeholder-shown)) .field__label {
+  transform: translateY(-10px) scale(0.78);
+}
+
+.field__control:focus-within .field__label {
+  color: var(--color-accent);
+}
+
+.field__toggle {
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  color: var(--color-muted);
+  background: transparent;
+  border: 0;
+  border-radius: 6px;
+  cursor: pointer;
+  transform: translateY(-50%);
+
+  &:hover {
+    color: var(--color-text);
+    background: var(--color-bg);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 1px;
+  }
+
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.field__error {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 22px;
+  margin: 4px 0 0;
+  font-size: 13px;
+  color: var(--color-danger);
+
+  svg {
+    flex: none;
+    width: 14px;
+    height: 14px;
+  }
+}
+
+.field--invalid {
+  .field__input,
+  .field__input:hover {
+    border-color: var(--color-danger);
+  }
+
+  .field__input:focus {
+    box-shadow: 0 0 0 4px var(--color-danger-ring);
+  }
+
+  .field__control:focus-within .field__label {
+    color: var(--color-danger);
+  }
+}
