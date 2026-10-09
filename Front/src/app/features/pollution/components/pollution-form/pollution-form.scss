@@ -1,0 +1,138 @@
+:host {
+  display: block;
+}
+
+.step {
+  display: none;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+
+  &--active {
+    display: block;
+    animation: step-in-forward 0.32s var(--ease) both;
+
+    [data-direction='backward'] & {
+      animation-name: step-in-backward;
+    }
+  }
+}
+
+.step__legend {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 20px;
+  padding: 0;
+}
+
+.step__title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.step__description {
+  font-size: 14px;
+  color: var(--color-muted);
+}
+
+.coordinates {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+}
+
+app-photo-preview,
+app-photo-picker {
+  margin-bottom: 20px;
+}
+
+.source {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  margin-bottom: 16px;
+  padding: 4px;
+  background: var(--color-bg);
+  border-radius: var(--radius-sm);
+}
+
+.source__option {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 40px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-muted);
+  border-radius: 8px;
+  cursor: pointer;
+  transition:
+    background-color 0.2s var(--ease),
+    color 0.2s var(--ease),
+    box-shadow 0.2s var(--ease);
+
+  input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  svg {
+    width: 16px;
+    height: 16px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  &:hover {
+    color: var(--color-text);
+  }
+
+  &:has(input:checked) {
+    color: var(--color-accent);
+    background: var(--color-surface);
+    box-shadow: 0 1px 3px rgb(16 24 40 / 0.1);
+  }
+
+  &:has(input:focus-visible) {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 1px;
+  }
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 12px;
+
+  .btn--primary {
+    flex: 1;
+  }
+}
+
+@keyframes step-in-forward {
+  from {
+    opacity: 0;
+    transform: translateX(24px);
+  }
+}
+
+@keyframes step-in-backward {
+  from {
+    opacity: 0;
+    transform: translateX(-24px);
+  }
+}
