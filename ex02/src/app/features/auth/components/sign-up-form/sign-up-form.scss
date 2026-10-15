@@ -1,0 +1,179 @@
+:host {
+  display: block;
+}
+
+.names {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+}
+
+.field__input--with-action {
+  padding-right: 52px;
+}
+
+.field__input:disabled {
+  color: var(--color-muted);
+  background: var(--color-bg);
+  cursor: not-allowed;
+}
+
+.password-toggle {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  color: var(--color-muted);
+  background: transparent;
+  border: 0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition:
+    color 0.2s var(--ease),
+    background-color 0.2s var(--ease);
+
+  svg {
+    width: 18px;
+    height: 18px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  &:hover:not(:disabled) {
+    color: var(--color-text);
+    background: var(--color-bg);
+  }
+
+  &:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px var(--color-accent-ring);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+}
+
+.rules {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: -4px 0 18px;
+  padding: 0;
+  list-style: none;
+}
+
+.rules__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px 4px 8px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-muted);
+  background: var(--color-bg);
+  border-radius: 99px;
+  transition:
+    color 0.2s var(--ease),
+    background-color 0.2s var(--ease);
+
+  svg {
+    width: 14px;
+    height: 14px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  &--ok {
+    color: var(--color-success-text);
+    background: var(--color-success-soft);
+  }
+}
+
+.alert {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+  padding: 14px 16px;
+  color: var(--color-danger);
+  background: var(--color-danger-soft);
+  border: 1px solid var(--color-danger-ring);
+  border-radius: var(--radius-sm);
+  animation: fade-in 0.25s var(--ease) both;
+
+  svg {
+    flex: none;
+    width: 18px;
+    height: 18px;
+    margin-top: 1px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+  }
+}
+
+.alert__text {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--color-text);
+
+  strong {
+    display: block;
+    color: var(--color-danger);
+  }
+}
+
+.actions {
+  display: flex;
+  margin-top: 12px;
+
+  .btn--primary {
+    flex: 1;
+  }
+}
+
+.spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
+// Pendant l'envoi, le bouton garde sa couleur pour accompagner le spinner.
+.sign-up-form[aria-busy='true'] .btn--primary:disabled {
+  color: #fff;
+  background: var(--color-accent);
+  opacity: 0.8;
+}
