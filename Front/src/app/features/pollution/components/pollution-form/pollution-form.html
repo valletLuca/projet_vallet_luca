@@ -1,0 +1,238 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="pollution-form" [attr.data-direction]="direction">
+  <!-- Étape 1 : Quoi -->
+  <fieldset formGroupName="what" class="step" data-step="0" [class.step--active]="currentStep === 0">
+    <legend class="step__legend">
+      <span class="step__title">{{ steps[0].title }}</span>
+      <span class="step__description">{{ steps[0].description }}</span>
+    </legend>
+
+    <app-form-field
+      label="Titre de la pollution"
+      fieldId="title"
+      [control]="what.title"
+      [minLength]="5"
+      [maxLength]="80"
+      [messages]="{
+        required: 'Le titre est requis.',
+        minlength: 'Le titre doit contenir au moins 5 caractères.',
+        maxlength: 'Le titre ne doit pas dépasser 80 caractères.',
+      }"
+    >
+      <input
+        id="title"
+        type="text"
+        class="field__input"
+        placeholder=" "
+        maxlength="80"
+        formControlName="title"
+        [attr.aria-invalid]="what.title.invalid && what.title.touched"
+        aria-describedby="title-error"
+      />
+    </app-form-field>
+
+    <app-form-field
+      label="Type de pollution"
+      fieldId="type"
+      [control]="what.type"
+      [messages]="{ required: 'Le type de pollution est requis.' }"
+    >
+      <select
+        id="type"
+        class="field__input"
+        formControlName="type"
+        [class.field__input--placeholder]="!what.type.value"
+        [attr.aria-invalid]="what.type.invalid && what.type.touched"
+        aria-describedby="type-error"
+      >
+        <option value="" disabled>Choisir un type…</option>
+        @for (type of types; track type.value) {
+          <option [value]="type.value">{{ type.label }}</option>
+        }
+      </select>
+    </app-form-field>
+
+    <app-form-field
+      label="Description"
+      fieldId="description"
+      [control]="what.description"
+      [minLength]="20"
+      [maxLength]="1000"
+      [messages]="{
+        required: 'La description est requise.',
+        minlength: 'La description doit contenir au moins 20 caractères.',
+        maxlength: 'La description ne doit pas dépasser 1000 caractères.',
+      }"
+    >
+      <textarea
+        id="description"
+        class="field__input"
+        placeholder=" "
+        rows="4"
+        maxlength="1000"
+        formControlName="description"
+        [attr.aria-invalid]="what.description.invalid && what.description.touched"
+        aria-describedby="description-error"
+      ></textarea>
+    </app-form-field>
+  </fieldset>
+
+  <!-- Étape 2 : Où et quand -->
+  <fieldset formGroupName="where" class="step" data-step="1" [class.step--active]="currentStep === 1">
+    <legend class="step__legend">
+      <span class="step__title">{{ steps[1].title }}</span>
+      <span class="step__description">{{ steps[1].description }}</span>
+    </legend>
+
+    <app-form-field
+      label="Date de l'observation"
+      fieldId="observedAt"
+      [control]="where.observedAt"
+      [messages]="{
+        required: 'La date de l\'observation est requise.',
+        invalidDate: 'Cette date n\'est pas valide.',
+        futureDate: 'La date ne peut pas être dans le futur.',
+      }"
+    >
+      <input
+        id="observedAt"
+        type="date"
+        class="field__input"
+        [max]="today"
+        formControlName="observedAt"
+        [attr.aria-invalid]="where.observedAt.invalid && where.observedAt.touched"
+        aria-describedby="observedAt-error"
+      />
+    </app-form-field>
+
+    <app-form-field
+      label="Lieu"
+      fieldId="place"
+      [control]="where.place"
+      [messages]="{ required: 'Le lieu est requis.' }"
+    >
+      <input
+        id="place"
+        type="text"
+        class="field__input"
+        placeholder=" "
+        autocomplete="address-level2"
+        formControlName="place"
+        [attr.aria-invalid]="where.place.invalid && where.place.touched"
+        aria-describedby="place-error"
+      />
+    </app-form-field>
+
+    <div class="coordinates">
+      <app-form-field
+        label="Latitude"
+        fieldId="latitude"
+        [control]="where.latitude"
+        [messages]="{
+          required: 'La latitude est requise (nombre).',
+          invalidNumber: 'La latitude doit être un nombre valide.',
+        }"
+      >
+        <input
+          id="latitude"
+          type="number"
+          step="any"
+          inputmode="decimal"
+          class="field__input"
+          placeholder=" "
+          formControlName="latitude"
+          [attr.aria-invalid]="where.latitude.invalid && where.latitude.touched"
+          aria-describedby="latitude-error"
+        />
+      </app-form-field>
+
+      <app-form-field
+        label="Longitude"
+        fieldId="longitude"
+        [control]="where.longitude"
+        [messages]="{
+          required: 'La longitude est requise (nombre).',
+          invalidNumber: 'La longitude doit être un nombre valide.',
+        }"
+      >
+        <input
+          id="longitude"
+          type="number"
+          step="any"
+          inputmode="decimal"
+          class="field__input"
+          placeholder=" "
+          formControlName="longitude"
+          [attr.aria-invalid]="where.longitude.invalid && where.longitude.touched"
+          aria-describedby="longitude-error"
+        />
+      </app-form-field>
+    </div>
+  </fieldset>
+
+  <!-- Étape 3 : Preuve -->
+  <fieldset formGroupName="evidence" class="step" data-step="2" [class.step--active]="currentStep === 2">
+    <legend class="step__legend">
+      <span class="step__title">{{ steps[2].title }}</span>
+      <span class="step__description">{{ steps[2].description }}</span>
+    </legend>
+
+    <div class="source" role="radiogroup" aria-label="Source de la photo">
+      <label class="source__option">
+        <input type="radio" formControlName="source" value="url" (change)="applyPhotoSource()" />
+        <svg viewBox="0 0 16 16" aria-hidden="true">
+          <path d="M6.5 9.5a3 3 0 004.2 0l2-2a3 3 0 00-4.2-4.2l-.8.8M9.5 6.5a3 3 0 00-4.2 0l-2 2a3 3 0 004.2 4.2l.8-.8" />
+        </svg>
+        Lien URL
+      </label>
+      <label class="source__option">
+        <input type="radio" formControlName="source" value="upload" (change)="applyPhotoSource()" />
+        <svg viewBox="0 0 16 16" aria-hidden="true">
+          <path d="M8 10.5V2.5M5 5.5l3-3 3 3M2.5 10.5v2a1 1 0 001 1h9a1 1 0 001-1v-2" />
+        </svg>
+        Importer
+      </label>
+    </div>
+
+    @if (evidence.source.value === 'url') {
+      <app-form-field label="Photo (URL)" fieldId="photoUrl" [control]="evidence.photoUrl" [optional]="true">
+        <input
+          id="photoUrl"
+          type="url"
+          class="field__input"
+          placeholder=" "
+          inputmode="url"
+          formControlName="photoUrl"
+        />
+      </app-form-field>
+
+      <app-photo-preview [url]="evidence.photoUrl.value" alt="Aperçu de la photo de la pollution" />
+    } @else {
+      <app-photo-picker
+        inputId="photoFile"
+        [file]="evidence.photoFile.value"
+        [error]="photoFileError"
+        (fileChange)="onPhotoFileChange($event)"
+      />
+    }
+  </fieldset>
+
+  <div class="actions">
+    @if (currentStep > 0) {
+      <button type="button" class="btn btn--ghost" (click)="previous()">
+        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3.5L5.5 8l4.5 4.5" /></svg>
+        Retour
+      </button>
+    }
+
+    @if (isLastStep) {
+      <button type="submit" class="btn btn--primary" [disabled]="form.invalid">
+        {{ editing ? 'Sauvegarder' : 'Déclarer' }}
+      </button>
+    } @else {
+      <button type="submit" class="btn btn--primary" [disabled]="currentGroup.invalid">
+        Suivant
+        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3.5L10.5 8 6 12.5" /></svg>
+      </button>
+    }
+  </div>
+</form>

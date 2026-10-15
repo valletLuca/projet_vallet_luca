@@ -1,0 +1,74 @@
+<article class="recap" [attr.data-type]="pollution.type" aria-labelledby="recap-title">
+  <header class="recap__header">
+    <p class="recap__status">
+      <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7" /></svg>
+      Récapitulatif de la déclaration
+    </p>
+    <span class="recap__badge">{{ typeLabel }}</span>
+    <h1 class="recap__title" id="recap-title">{{ pollution.title }}</h1>
+    <p class="recap__date">
+      Observée le <time [attr.datetime]="pollution.observedAt">{{ pollution.observedAt | date: 'longDate' }}</time>
+    </p>
+  </header>
+
+  <div class="recap__body">
+    <div class="recap__media">
+      @if (photoSrc) {
+        <app-photo-preview
+          [url]="photoSrc"
+          [alt]="'Photo de la pollution : ' + pollution.title"
+          [errorLabel]="pollution.photoFile ? 'Aperçu indisponible pour ce format' : 'Image introuvable à cette adresse'"
+        />
+      } @else {
+        <div class="recap__no-photo">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 3c3.9 4.8 6.5 8.6 6.5 12a6.5 6.5 0 01-13 0c0-3.4 2.6-7.2 6.5-12z" />
+          </svg>
+          <span>Pas de photo jointe</span>
+        </div>
+      }
+    </div>
+
+    <dl class="recap__details">
+      <div class="recap__item">
+        <dt>Description</dt>
+        <dd class="recap__description">{{ pollution.description }}</dd>
+      </div>
+      <div class="recap__item">
+        <dt>Lieu</dt>
+        <dd>{{ pollution.place }}</dd>
+      </div>
+      <div class="recap__item recap__item--split">
+        <div>
+          <dt>Latitude</dt>
+          <dd class="recap__mono">{{ pollution.latitude | number: '1.6-6' }}</dd>
+        </div>
+        <div>
+          <dt>Longitude</dt>
+          <dd class="recap__mono">{{ pollution.longitude | number: '1.6-6' }}</dd>
+        </div>
+      </div>
+      @if (pollution.photoFile; as file) {
+        <div class="recap__item">
+          <dt>Photo importée</dt>
+          <dd class="recap__url">{{ file.name }} · {{ fileSize }}</dd>
+        </div>
+      } @else if (pollution.photoUrl) {
+        <div class="recap__item">
+          <dt>Photo</dt>
+          <dd class="recap__url">{{ pollution.photoUrl }}</dd>
+        </div>
+      }
+    </dl>
+  </div>
+
+  <footer class="recap__actions">
+    <button type="button" class="btn btn--ghost" (click)="edit.emit()">
+      <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M10.5 2.5l3 3L6 13H3v-3z" /></svg>
+      Modifier
+    </button>
+    <button type="button" class="btn btn--primary" (click)="restart.emit()">
+      Nouvelle déclaration
+    </button>
+  </footer>
+</article>

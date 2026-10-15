@@ -1,0 +1,30 @@
+<main class="page">
+  @if (declaration(); as pollution) {
+    <section class="card card--wide">
+      <app-pollution-recap [pollution]="pollution" (edit)="onEdit()" (restart)="onRestart()" />
+    </section>
+  } @else {
+    <section class="card">
+      <header class="card__header">
+        <span class="card__eyebrow">Étape {{ currentStep() + 1 }} sur {{ steps.length }}</span>
+        <h1 class="card__title">Déclarer une pollution</h1>
+      </header>
+
+      <app-stepper-header
+        [steps]="steps"
+        [currentStep]="currentStep()"
+        (stepSelect)="onStepChange($event)"
+      />
+
+      <app-pollution-form
+        [steps]="steps"
+        [currentStep]="currentStep()"
+        [initialValue]="draft()"
+        [autoFocus]="returningFromRecap()"
+        [editing]="draft() !== null"
+        (stepChange)="onStepChange($event)"
+        (declared)="onDeclared($event)"
+      />
+    </section>
+  }
+</main>
