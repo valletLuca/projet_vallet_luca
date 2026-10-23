@@ -1,0 +1,97 @@
+:host {
+  display: block;
+}
+
+.map {
+  margin: 0;
+}
+
+.map__canvas {
+  position: relative;
+}
+
+.map__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.map__dots circle {
+  fill: var(--color-border-strong);
+}
+
+.map__pin {
+  cursor: pointer;
+  outline: none;
+}
+
+.map__pin-body {
+  color: var(--type-color);
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: pin-drop 0.5s var(--ease) both;
+  transition: opacity 0.25s var(--ease);
+}
+
+.map__pin-halo {
+  fill: currentColor;
+  opacity: 0.18;
+  transform-box: fill-box;
+  transform-origin: center;
+  transition:
+    opacity 0.2s var(--ease),
+    transform 0.2s var(--ease);
+}
+
+.map__pin-dot {
+  fill: currentColor;
+  stroke: var(--color-surface);
+  stroke-width: 2;
+}
+
+.map__pin--dimmed .map__pin-body {
+  opacity: 0.22;
+}
+
+.map__pin--active .map__pin-halo,
+.map__pin:focus-visible .map__pin-halo {
+  opacity: 0.3;
+  transform: scale(1.5);
+}
+
+.map__pin:focus-visible .map__pin-dot {
+  stroke: var(--color-accent);
+}
+
+.map__tooltip {
+  position: absolute;
+  z-index: 1;
+  max-width: 220px;
+  margin: 0;
+  padding: 6px 10px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.35;
+  color: #fff;
+  background: var(--color-text);
+  border-radius: 8px;
+  box-shadow: 0 8px 20px -6px rgb(16 24 40 / 0.35);
+  transform: translate(-50%, calc(-100% - 16px));
+  pointer-events: none;
+  width: max-content;
+}
+
+.map__caption {
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--color-muted);
+  text-align: center;
+}
+
+@keyframes pin-drop {
+  from {
+    opacity: 0;
+    transform: translateY(-14px) scale(0.6);
+  }
+}

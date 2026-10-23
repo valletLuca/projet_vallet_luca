@@ -1,0 +1,52 @@
+<figure class="map">
+  <div class="map__canvas">
+    <svg class="map__svg" [attr.viewBox]="viewBox" role="group" aria-label="Carte des signalements">
+      <g class="map__dots" aria-hidden="true">
+        @for (dot of dots; track $index) {
+          <circle [attr.cx]="dot.x" [attr.cy]="dot.y" r="1.15" />
+        }
+      </g>
+
+      @for (pin of pins; track pin.id) {
+        <g
+          class="map__pin"
+          role="link"
+          tabindex="0"
+          [attr.data-type]="pin.type"
+          [attr.aria-label]="pin.label"
+          [class.map__pin--dimmed]="pin.dimmed"
+          [class.map__pin--active]="pin.id === activeId"
+          [attr.transform]="'translate(' + pin.x + ' ' + pin.y + ')'"
+          (mouseenter)="activeIdChange.emit(pin.id)"
+          (mouseleave)="activeIdChange.emit(null)"
+          (focus)="activeIdChange.emit(pin.id)"
+          (blur)="activeIdChange.emit(null)"
+          (click)="pinSelect.emit(pin.id)"
+          (keydown.enter)="pinSelect.emit(pin.id)"
+        >
+          <g class="map__pin-body" [style.animation-delay.ms]="pin.delay">
+            <circle class="map__pin-halo" r="11" />
+            <circle class="map__pin-dot" r="5" />
+          </g>
+        </g>
+      }
+    </svg>
+
+    @if (activePin; as pin) {
+      <p
+        class="map__tooltip"
+        aria-hidden="true"
+        [style.left.%]="(pin.x * 100) / mapWidth"
+        [style.top.%]="(pin.y * 100) / mapHeight"
+      >
+        {{ pin.label }}
+      </p>
+    }
+  </div>
+
+  @if (outside > 0) {
+    <figcaption class="map__caption">
+      {{ outside }} {{ outside > 1 ? 'signalements situés' : 'signalement situé' }} hors de la métropole
+    </figcaption>
+  }
+</figure>
