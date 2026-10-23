@@ -1,0 +1,171 @@
+<main class="list-page">
+  <header class="list-page__header">
+    <h1 class="list-page__title">Signalements</h1>
+    <p class="list-page__subtitle">
+      Les pollutions déclarées, à parcourir sur la carte, par type ou par date.
+    </p>
+  </header>
+
+  @switch (status()) {
+    @case ('loading') {
+      <div class="overview overview--loading" aria-hidden="true">
+        <span class="overview__bone overview__bone--map"></span>
+        <span class="overview__bone overview__bone--side"></span>
+      </div>
+    }
+    @case ('ready') {
+      @if (pollutions().length) {
+        <section class="overview" aria-label="Vue d'ensemble">
+          <app-pollution-map
+            class="overview__map"
+            [pollutions]="pollutions()"
+            [visibleIds]="visibleIds()"
+            [activeId]="activeId()"
+            (activeIdChange)="activeId.set($event)"
+            (pinSelect)="openPollution($event)"
+          />
+          <app-pollution-breakdown
+            class="overview__side"
+            [pollutions]="pollutions()"
+            [activeType]="filters().type"
+            (typeToggle)="onTypeToggle($event)"
+          />
+        </section>
+      }
+    }
+  }
+
+  <app-pollution-filter-bar class="list-page__filters" (filtersChange)="onFiltersChange($event)" />
+
+  <div class="list-page__notice" aria-live="polite">
+    @if (notice(); as message) {
+      <p class="notice">
+        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7" /></svg>
+        <span>{{ message }}</span>
+        <button type="button" class="notice__close" aria-label="Fermer le message" (click)="notice.set(null)">
+          <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8" /></svg>
+        </button>
+      </p>
+    }
+  </div>
+
+  @if (status() === 'ready' && pollutions().length) {
+    <div class="toolbar">
+      <p class="toolbar__count" aria-live="polite">{{ resultLabel() }}</p>
+
+      <div class="toolbar__views" role="group" aria-label="Affichage">
+        <button
+          type="button"
+          class="toolbar__view"
+          [attr.aria-pressed]="view() === 'grid'"
+          (click)="setView('grid')"
+        >
+          <svg viewBox="0 0 16 16" aria-hidden="true">
+            <rect x="2.5" y="2.5" width="4.5" height="4.5" rx="1" />
+            <rect x="9" y="2.5" width="4.5" height="4.5" rx="1" />
+            <rect x="2.5" y="9" width="4.5" height="4.5" rx="1" />
+            <rect x="9" y="9" width="4.5" height="4.5" rx="1" />
+          </svg>
+          Grille
+        </button>
+        <button
+          type="button"
+          class="toolbar__view"
+          [attr.aria-pressed]="view() === 'timeline'"
+          (click)="setView('timeline')"
+        >
+          <svg viewBox="0 0 16 16" aria-hidden="true">
+            <path d="M4 2v12" />
+            <circle cx="4" cy="4.5" r="1.5" />
+            <circle cx="4" cy="11.5" r="1.5" />
+            <path d="M7.5 4.5h6M7.5 11.5h6" />
+          </svg>
+          Chronologie
+        </button>
+      </div>
+    </div>
+  }
+
+  @switch (status()) {
+    @case ('loading') {
+      <ul class="grid" aria-hidden="true">
+        @for (i of skeletons; track i) {
+          <li class="skeleton">
+            <span class="skeleton__media"></span>
+            <span class="skeleton__line skeleton__line--short"></span>
+            <span class="skeleton__line"></span>
+            <span class="skeleton__line skeleton__line--medium"></span>
+          </li>
+        }
+      </ul>
+    }
+    @case ('error') {
+      <app-page-state
+        kind="error"
+        heading="Impossible de charger les signalements"
+        message="Le serveur ne répond pas. Vérifiez votre connexion puis réessayez."
+      >
+        <button type="button" class="btn btn--primary" (click)="load()">Réessayer</button>
+      </app-page-state>
+    }
+    @default {
+      @if (filtered().length) {
+        @if (view() === 'grid') {
+          <ul class="grid">
+            @for (pollution of filtered(); track pollution.id) {
+              <li
+                (mouseenter)="activeId.set(pollution.id)"
+                (mouseleave)="activeId.set(null)"
+                (focusin)="activeId.set(pollution.id)"
+                (focusout)="activeId.set(null)"
+              >
+                <app-pollution-card
+                  [pollution]="pollution"
+                  [active]="pollution.id === activeId()"
+                  (remove)="askDelete($event)"
+                />
+              </li>
+            }
+          </ul>
+        } @else {
+          <app-pollution-timeline
+            class="list-page__timeline"
+            [pollutions]="filtered()"
+            [activeId]="activeId()"
+            (activeIdChange)="activeId.set($event)"
+            (remove)="askDelete($event)"
+          />
+        }
+      } @else if (filtering()) {
+        <app-page-state
+          kind="search"
+          heading="Aucun signalement ne correspond"
+          message="Élargissez la période ou modifiez la recherche."
+        >
+          <button type="button" class="btn btn--ghost" (click)="resetFilters()">
+            Réinitialiser les filtres
+          </button>
+        </app-page-state>
+      } @else {
+        <app-page-state
+          heading="Aucun signalement pour l'instant"
+          message="Les pollutions déclarées apparaîtront ici, sur la carte et dans la liste."
+        >
+          <a class="btn btn--primary" routerLink="/pollutions/nouvelle">Déclarer une pollution</a>
+        </app-page-state>
+      }
+    }
+  }
+</main>
+
+<app-confirm-dialog
+  heading="Supprimer ce signalement ?"
+  [message]="'« ' + (pendingDelete()?.title ?? '') + ' » sera définitivement supprimé.'"
+  confirmLabel="Supprimer"
+  busyLabel="Suppression…"
+  [open]="pendingDelete() !== null"
+  [busy]="deleting()"
+  [error]="deleteError()"
+  (confirmed)="confirmDelete()"
+  (dismissed)="cancelDelete()"
+/>

@@ -1,0 +1,48 @@
+<article class="card-item" [attr.data-type]="pollution.type" [class.card-item--active]="active">
+  <div class="card-item__media">
+    @if (pollution.photoUrl) {
+      <app-photo-preview [url]="pollution.photoUrl" alt="" />
+    } @else {
+      <div class="card-item__no-photo" aria-hidden="true">
+        <svg viewBox="0 0 24 24">
+          <path d="M12 3c3.9 4.8 6.5 8.6 6.5 12a6.5 6.5 0 01-13 0c0-3.4 2.6-7.2 6.5-12z" />
+        </svg>
+      </div>
+    }
+  </div>
+
+  <div class="card-item__body">
+    <span class="badge">{{ typeLabel }}</span>
+    <h2 class="card-item__title">
+      <a class="card-item__link" [routerLink]="['/pollutions', pollution.id]">{{ pollution.title }}</a>
+    </h2>
+    <p class="card-item__meta">
+      <span class="card-item__meta-item">
+        <svg viewBox="0 0 16 16" aria-hidden="true">
+          <path d="M8 14s4.5-4.2 4.5-7.5a4.5 4.5 0 00-9 0C3.5 9.8 8 14 8 14z" />
+          <circle cx="8" cy="6.5" r="1.6" />
+        </svg>
+        {{ pollution.place }}
+      </span>
+      <span class="card-item__meta-item">
+        <svg viewBox="0 0 16 16" aria-hidden="true">
+          <rect x="2.5" y="3.5" width="11" height="10" rx="2" />
+          <path d="M2.5 7h11M5.5 2v3M10.5 2v3" />
+        </svg>
+        <time [attr.datetime]="pollution.observedAt">{{ pollution.observedAt | date: 'd MMM y' }}</time>
+      </span>
+    </p>
+  </div>
+
+  <button
+    type="button"
+    class="card-item__delete"
+    [attr.aria-label]="'Supprimer « ' + pollution.title + ' »'"
+    title="Supprimer"
+    (click)="remove.emit(pollution)"
+  >
+    <svg viewBox="0 0 16 16" aria-hidden="true">
+      <path d="M2.5 4.5h11M6.5 7.5v4M9.5 7.5v4M3.5 4.5l.7 8.1a1.5 1.5 0 001.5 1.4h4.6a1.5 1.5 0 001.5-1.4l.7-8.1M6 4.5V2.5h4v2" />
+    </svg>
+  </button>
+</article>

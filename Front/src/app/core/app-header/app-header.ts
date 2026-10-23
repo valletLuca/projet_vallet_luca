@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 
 export const APP_BRAND = {
   name: 'Sillage',
@@ -7,6 +8,7 @@ export const APP_BRAND = {
 
 @Component({
   selector: 'app-header',
+  imports: [RouterLink, RouterLinkActive],
   templateUrl: './app-header.html',
   styleUrl: './app-header.scss',
 })

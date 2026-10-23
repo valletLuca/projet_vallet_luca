@@ -1,47 +1,26 @@
 import { DatePipe, DecimalPipe } from '@angular/common';
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output } from '@angular/core';
-import { PollutionDeclaration, pollutionTypeLabel } from '../../models/pollution.model';
-import { formatFileSize } from '../../utils/file-size';
+import { Component, Input } from '@angular/core';
+import { Pollution, pollutionTypeLabel } from '../../models/pollution.model';
 import { PhotoPreview } from '../photo-preview/photo-preview';
 
+/** Fiche d'une pollution. Les boutons d'action sont projetés par le parent. */
 @Component({
   selector: 'app-pollution-recap',
   imports: [DatePipe, DecimalPipe, PhotoPreview],
   templateUrl: './pollution-recap.html',
   styleUrl: './pollution-recap.scss',
 })
-export class PollutionRecap implements OnChanges, OnDestroy {
-  @Input({ required: true }) pollution!: PollutionDeclaration;
-  @Output() edit = new EventEmitter<void>();
-  @Output() restart = new EventEmitter<void>();
-
-  protected photoSrc: string | null = null;
-  private objectUrl: string | null = null;
+export class PollutionRecap {
+  @Input({ required: true }) pollution!: Pollution;
+  /** Message de confirmation affiché au-dessus du titre (ex. après un enregistrement). */
+  @Input() status: string | null = null;
 
   get typeLabel(): string {
     return pollutionTypeLabel(this.pollution.type);
   }
 
-  get fileSize(): string {
-    return this.pollution.photoFile ? formatFileSize(this.pollution.photoFile.size) : '';
-  }
-
-  ngOnChanges(): void {
-    this.revokeObjectUrl();
-    if (this.pollution.photoFile) {
-      this.objectUrl = URL.createObjectURL(this.pollution.photoFile);
-    }
-    this.photoSrc = this.objectUrl ?? this.pollution.photoUrl;
-  }
-
-  ngOnDestroy(): void {
-    this.revokeObjectUrl();
-  }
-
-  private revokeObjectUrl(): void {
-    if (this.objectUrl) {
-      URL.revokeObjectURL(this.objectUrl);
-      this.objectUrl = null;
-    }
+  get mapUrl(): string {
+    const { latitude, longitude } = this.pollution;
+    return `https://www.openstreetmap.org/?mlat=${latitude}&mlon=${longitude}#map=16/${latitude}/${longitude}`;
   }
 }

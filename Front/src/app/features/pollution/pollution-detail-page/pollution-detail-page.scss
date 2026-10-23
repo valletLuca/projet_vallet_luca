@@ -1,0 +1,72 @@
+:host {
+  display: block;
+}
+
+.detail {
+  width: 100%;
+  max-width: 800px;
+}
+
+// Le bouton de suppression se place à gauche, à l'écart des autres actions.
+.detail__delete {
+  margin-right: auto;
+  color: var(--color-danger);
+
+  &:hover {
+    background: var(--color-danger-ring);
+  }
+
+  @media (max-width: 480px) {
+    margin-right: 0;
+  }
+}
+
+.detail__skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.detail__bone {
+  display: block;
+  background: linear-gradient(
+    100deg,
+    var(--color-bg) 30%,
+    var(--color-surface) 50%,
+    var(--color-bg) 70%
+  );
+  background-size: 300% 100%;
+  border-radius: 8px;
+  animation: shimmer 1.4s linear infinite;
+
+  &--badge {
+    width: 80px;
+    height: 22px;
+    border-radius: 99px;
+  }
+
+  &--title {
+    width: 70%;
+    height: 30px;
+  }
+
+  &--text {
+    width: 40%;
+    height: 16px;
+    margin-bottom: 16px;
+  }
+
+  &--media {
+    aspect-ratio: 16 / 6;
+    border-radius: var(--radius-sm);
+  }
+}
+
+@keyframes shimmer {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: -50% 0;
+  }
+}

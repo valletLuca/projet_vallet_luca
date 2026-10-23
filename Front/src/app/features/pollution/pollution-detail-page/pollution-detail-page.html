@@ -1,0 +1,68 @@
+<main class="page">
+  <div class="detail">
+    <a class="back-link" routerLink="/pollutions">
+      <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3.5L5.5 8l4.5 4.5" /></svg>
+      Tous les signalements
+    </a>
+
+    <section class="card card--wide">
+      @switch (status()) {
+        @case ('loading') {
+          <div class="detail__skeleton" role="status">
+            <span class="visually-hidden">Chargement du signalement…</span>
+            <span class="detail__bone detail__bone--badge"></span>
+            <span class="detail__bone detail__bone--title"></span>
+            <span class="detail__bone detail__bone--text"></span>
+            <span class="detail__bone detail__bone--media"></span>
+          </div>
+        }
+        @case ('not-found') {
+          <app-page-state
+            heading="Signalement introuvable"
+            message="Ce signalement n'existe pas ou a été supprimé."
+          >
+            <a class="btn btn--primary" routerLink="/pollutions">Voir les signalements</a>
+          </app-page-state>
+        }
+        @case ('error') {
+          <app-page-state
+            kind="error"
+            heading="Impossible de charger le signalement"
+            message="Le serveur ne répond pas. Vérifiez votre connexion puis réessayez."
+          >
+            <button type="button" class="btn btn--primary" (click)="load()">Réessayer</button>
+          </app-page-state>
+        }
+        @case ('ready') {
+          @if (pollution(); as pollution) {
+            <app-pollution-recap [pollution]="pollution" [status]="savedMessage">
+              <button type="button" class="btn btn--ghost detail__delete" (click)="askDelete()">
+                <svg viewBox="0 0 16 16" aria-hidden="true">
+                  <path d="M2.5 4.5h11M6.5 7.5v4M9.5 7.5v4M3.5 4.5l.7 8.1a1.5 1.5 0 001.5 1.4h4.6a1.5 1.5 0 001.5-1.4l.7-8.1M6 4.5V2.5h4v2" />
+                </svg>
+                Supprimer
+              </button>
+              <a class="btn btn--ghost" [routerLink]="['/pollutions', pollution.id, 'modifier']">
+                <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M10.5 2.5l3 3L6 13H3v-3z" /></svg>
+                Modifier
+              </a>
+              <a class="btn btn--primary" routerLink="/pollutions/nouvelle">Nouvelle déclaration</a>
+            </app-pollution-recap>
+
+            <app-confirm-dialog
+              heading="Supprimer ce signalement ?"
+              [message]="'« ' + pollution.title + ' » sera définitivement supprimé.'"
+              confirmLabel="Supprimer"
+              busyLabel="Suppression…"
+              [open]="confirmingDelete()"
+              [busy]="deleting()"
+              [error]="deleteError()"
+              (confirmed)="confirmDelete()"
+              (dismissed)="confirmingDelete.set(false)"
+            />
+          }
+        }
+      }
+    </section>
+  </div>
+</main>

@@ -1,0 +1,79 @@
+.dialog {
+  width: calc(100% - 32px);
+  max-width: 420px;
+  padding: 28px;
+  color: var(--color-text);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+
+  &[open] {
+    animation: dialog-in 0.25s var(--ease) both;
+  }
+
+  &::backdrop {
+    background: rgb(22 27 46 / 0.45);
+    backdrop-filter: blur(2px);
+  }
+}
+
+.dialog__icon {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  margin-bottom: 16px;
+  color: var(--color-danger);
+  background: var(--color-danger-ring);
+  border-radius: 50%;
+
+  svg {
+    width: 22px;
+    height: 22px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+}
+
+.dialog__title {
+  margin: 0 0 8px;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.dialog__message {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--color-muted);
+  overflow-wrap: anywhere;
+}
+
+.dialog__error {
+  margin: 16px 0 0;
+  font-size: 14px;
+  color: var(--color-danger);
+}
+
+.dialog__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
+
+  @media (max-width: 480px) {
+    flex-direction: column-reverse;
+  }
+}
+
+@keyframes dialog-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+}

@@ -218,15 +218,20 @@
 
   <div class="actions">
     @if (currentStep > 0) {
-      <button type="button" class="btn btn--ghost" (click)="previous()">
+      <button type="button" class="btn btn--ghost" [disabled]="saving" (click)="previous()">
         <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3.5L5.5 8l4.5 4.5" /></svg>
         Retour
       </button>
     }
 
     @if (isLastStep) {
-      <button type="submit" class="btn btn--primary" [disabled]="form.invalid">
-        {{ editing ? 'Sauvegarder' : 'Déclarer' }}
+      <button type="submit" class="btn btn--primary" [disabled]="form.invalid || saving">
+        @if (saving) {
+          <span class="btn__spinner" aria-hidden="true"></span>
+          Enregistrement…
+        } @else {
+          {{ editing ? 'Sauvegarder' : 'Déclarer' }}
+        }
       </button>
     } @else {
       <button type="submit" class="btn btn--primary" [disabled]="currentGroup.invalid">
