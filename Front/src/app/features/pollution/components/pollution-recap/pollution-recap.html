@@ -1,24 +1,24 @@
 <article class="recap" [attr.data-type]="pollution.type" aria-labelledby="recap-title">
   <header class="recap__header">
-    <p class="recap__status">
-      <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7" /></svg>
-      Récapitulatif de la déclaration
-    </p>
-    <span class="recap__badge">{{ typeLabel }}</span>
+    @if (status) {
+      <p class="recap__status" role="status">
+        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7" /></svg>
+        {{ status }}
+      </p>
+    }
+    <span class="badge">{{ typeLabel }}</span>
     <h1 class="recap__title" id="recap-title">{{ pollution.title }}</h1>
     <p class="recap__date">
-      Observée le <time [attr.datetime]="pollution.observedAt">{{ pollution.observedAt | date: 'longDate' }}</time>
+      Observée le
+      <time [attr.datetime]="pollution.observedAt">{{ pollution.observedAt | date: 'longDate' }}</time>
+      <span class="recap__ref">Signalement n° {{ pollution.id }}</span>
     </p>
   </header>
 
   <div class="recap__body">
     <div class="recap__media">
-      @if (photoSrc) {
-        <app-photo-preview
-          [url]="photoSrc"
-          [alt]="'Photo de la pollution : ' + pollution.title"
-          [errorLabel]="pollution.photoFile ? 'Aperçu indisponible pour ce format' : 'Image introuvable à cette adresse'"
-        />
+      @if (pollution.photoUrl) {
+        <app-photo-preview [url]="pollution.photoUrl" [alt]="'Photo de la pollution : ' + pollution.title" />
       } @else {
         <div class="recap__no-photo">
           <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -47,28 +47,32 @@
           <dt>Longitude</dt>
           <dd class="recap__mono">{{ pollution.longitude | number: '1.6-6' }}</dd>
         </div>
+        <a class="recap__link recap__map" [href]="mapUrl" target="_blank" rel="noopener">
+          Voir sur la carte
+          <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3.5h6.5V10M12.5 3.5L4 12" /></svg>
+          <span class="visually-hidden">(nouvel onglet)</span>
+        </a>
       </div>
-      @if (pollution.photoFile; as file) {
-        <div class="recap__item">
-          <dt>Photo importée</dt>
-          <dd class="recap__url">{{ file.name }} · {{ fileSize }}</dd>
-        </div>
-      } @else if (pollution.photoUrl) {
+      @if (pollution.photoUrl) {
         <div class="recap__item">
           <dt>Photo</dt>
-          <dd class="recap__url">{{ pollution.photoUrl }}</dd>
+          <dd>
+            <a class="recap__link" [href]="pollution.photoUrl" target="_blank" rel="noopener">
+              Ouvrir en taille réelle
+              <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3.5h6.5V10M12.5 3.5L4 12" /></svg>
+              <span class="visually-hidden">(nouvel onglet)</span>
+            </a>
+          </dd>
         </div>
       }
+      <div class="recap__item">
+        <dt>Signalée le</dt>
+        <dd>{{ pollution.createdAt | date: "d MMMM y 'à' HH:mm" }}</dd>
+      </div>
     </dl>
   </div>
 
   <footer class="recap__actions">
-    <button type="button" class="btn btn--ghost" (click)="edit.emit()">
-      <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M10.5 2.5l3 3L6 13H3v-3z" /></svg>
-      Modifier
-    </button>
-    <button type="button" class="btn btn--primary" (click)="restart.emit()">
-      Nouvelle déclaration
-    </button>
+    <ng-content />
   </footer>
 </article>

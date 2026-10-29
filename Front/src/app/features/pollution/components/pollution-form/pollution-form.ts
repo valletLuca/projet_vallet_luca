@@ -43,6 +43,8 @@ export class PollutionForm implements OnInit, OnChanges {
   @Input() initialValue: PollutionDeclaration | null = null;
   @Input() autoFocus = false;
   @Input() editing = false;
+  /** Requête d'enregistrement en cours : la soumission est bloquée. */
+  @Input() saving = false;
   @Output() stepChange = new EventEmitter<number>();
   @Output() declared = new EventEmitter<PollutionDeclaration>();
 
@@ -200,7 +202,7 @@ export class PollutionForm implements OnInit, OnChanges {
     }
 
     // Verrou de soumission : le bouton est désactivé, mais on revérifie côté code.
-    if (this.form.invalid) {
+    if (this.form.invalid || this.saving) {
       return;
     }
     this.declared.emit(this.toDeclaration());

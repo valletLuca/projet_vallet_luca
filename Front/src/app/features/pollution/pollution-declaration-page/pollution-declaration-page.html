@@ -1,30 +1,77 @@
 <main class="page">
-  @if (declaration(); as pollution) {
-    <section class="card card--wide">
-      <app-pollution-recap [pollution]="pollution" (edit)="onEdit()" (restart)="onRestart()" />
-    </section>
-  } @else {
+  <div class="declaration">
+    @if (editing) {
+      <a class="back-link" [routerLink]="['/pollutions', id]">
+        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3.5L5.5 8l4.5 4.5" /></svg>
+        Retour au signalement
+      </a>
+    } @else {
+      <a class="back-link" routerLink="/pollutions">
+        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3.5L5.5 8l4.5 4.5" /></svg>
+        Tous les signalements
+      </a>
+    }
+
     <section class="card">
-      <header class="card__header">
-        <span class="card__eyebrow">Étape {{ currentStep() + 1 }} sur {{ steps.length }}</span>
-        <h1 class="card__title">Déclarer une pollution</h1>
-      </header>
+      @switch (status()) {
+        @case ('loading') {
+          <div class="declaration__loading" role="status">
+            <span class="declaration__spinner" aria-hidden="true"></span>
+            Chargement du signalement…
+          </div>
+        }
+        @case ('not-found') {
+          <app-page-state
+            heading="Signalement introuvable"
+            message="Ce signalement n'existe pas ou a été supprimé."
+          >
+            <a class="btn btn--primary" routerLink="/pollutions">Voir les signalements</a>
+          </app-page-state>
+        }
+        @case ('error') {
+          <app-page-state
+            kind="error"
+            heading="Impossible de charger le signalement"
+            message="Le serveur ne répond pas. Vérifiez votre connexion puis réessayez."
+          >
+            <button type="button" class="btn btn--primary" (click)="load()">Réessayer</button>
+          </app-page-state>
+        }
+        @case ('ready') {
+          <header class="card__header">
+            <span class="card__eyebrow">Étape {{ currentStep() + 1 }} sur {{ steps.length }}</span>
+            <h1 class="card__title">
+              {{ editing ? 'Modifier le signalement' : 'Déclarer une pollution' }}
+            </h1>
+          </header>
 
-      <app-stepper-header
-        [steps]="steps"
-        [currentStep]="currentStep()"
-        (stepSelect)="onStepChange($event)"
-      />
+          <app-stepper-header
+            [steps]="steps"
+            [currentStep]="currentStep()"
+            (stepSelect)="onStepChange($event)"
+          />
 
-      <app-pollution-form
-        [steps]="steps"
-        [currentStep]="currentStep()"
-        [initialValue]="draft()"
-        [autoFocus]="returningFromRecap()"
-        [editing]="draft() !== null"
-        (stepChange)="onStepChange($event)"
-        (declared)="onDeclared($event)"
-      />
+          @if (saveError(); as message) {
+            <p class="declaration__error" role="alert">
+              <svg viewBox="0 0 16 16" aria-hidden="true">
+                <circle cx="8" cy="8" r="7" />
+                <path d="M8 4.5v4M8 11v.5" />
+              </svg>
+              {{ message }}
+            </p>
+          }
+
+          <app-pollution-form
+            [steps]="steps"
+            [currentStep]="currentStep()"
+            [initialValue]="draft()"
+            [editing]="editing"
+            [saving]="saving()"
+            (stepChange)="onStepChange($event)"
+            (declared)="onDeclared($event)"
+          />
+        }
+      }
     </section>
-  }
+  </div>
 </main>

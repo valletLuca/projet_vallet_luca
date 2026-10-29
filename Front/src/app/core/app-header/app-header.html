@@ -1,13 +1,37 @@
 <header class="header">
   <div class="header__inner">
-    <svg class="header__logo" viewBox="0 0 32 32" aria-hidden="true">
-      <rect width="32" height="32" rx="9" />
-      <path d="M16 7c3.6 4.4 6 7.9 6 11a6 6 0 01-12 0c0-3.1 2.4-6.6 6-11z" />
-      <path d="M13.5 19.5a2.6 2.6 0 002.5 2" />
-    </svg>
-    <p class="header__brand">
-      <span class="header__name">{{ brand.name }}</span>
-      <span class="header__tagline">{{ brand.tagline }}</span>
-    </p>
+    <a class="header__home" routerLink="/pollutions" [attr.aria-label]="brand.name + ', accueil'">
+      <svg class="header__logo" viewBox="0 0 32 32" aria-hidden="true">
+        <rect width="32" height="32" rx="9" />
+        <path d="M16 7c3.6 4.4 6 7.9 6 11a6 6 0 01-12 0c0-3.1 2.4-6.6 6-11z" />
+        <path d="M13.5 19.5a2.6 2.6 0 002.5 2" />
+      </svg>
+      <span class="header__brand">
+        <span class="header__name">{{ brand.name }}</span>
+        <span class="header__tagline">{{ brand.tagline }}</span>
+      </span>
+    </a>
+
+    <nav class="header__nav" aria-label="Navigation principale">
+      <a
+        class="header__link"
+        routerLink="/pollutions"
+        routerLinkActive="header__link--active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        ariaCurrentWhenActive="page"
+      >
+        Signalements
+      </a>
+      <a
+        class="btn btn--primary btn--sm header__cta"
+        routerLink="/pollutions/nouvelle"
+        ariaCurrentWhenActive="page"
+        routerLinkActive
+        aria-label="Déclarer une pollution"
+      >
+        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 3v10M3 8h10" /></svg>
+        <span class="header__cta-label">Déclarer</span>
+      </a>
+    </nav>
   </div>
 </header>

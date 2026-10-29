@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
 import { AppHeader } from './core/app-header/app-header';
-import { PollutionDeclarationPage } from './features/pollution/pollution-declaration-page/pollution-declaration-page';
 
 @Component({
   selector: 'app-root',
-  imports: [AppHeader, PollutionDeclarationPage],
+  imports: [AppHeader, RouterOutlet],
   templateUrl: './app.html',
 })
 export class App {}

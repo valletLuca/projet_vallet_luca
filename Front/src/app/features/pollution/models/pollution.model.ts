@@ -20,8 +20,14 @@ export interface PollutionDeclaration {
   latitude: number;
   longitude: number;
   photoUrl: string | null;
-  /** Fichier importé depuis l'appareil, conservé pour le futur envoi à l'API (FormData). */
+  /** Fichier importé depuis l'appareil, envoyé à l'API en `FormData` (voir PollutionService). */
   photoFile: File | null;
+}
+
+/** Pollution telle que renvoyée par l'API : la photo importée est devenue une URL. */
+export interface Pollution extends Omit<PollutionDeclaration, 'photoFile'> {
+  id: number;
+  createdAt: string;
 }
 
 export function pollutionTypeLabel(type: PollutionType): string {

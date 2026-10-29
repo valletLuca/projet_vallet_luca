@@ -1,0 +1,29 @@
+<dialog
+  #dialog
+  class="dialog"
+  [attr.aria-labelledby]="dialogId + '-title'"
+  [attr.aria-describedby]="dialogId + '-message'"
+  (cancel)="onCancel($event)"
+  (click)="onBackdropClick($event)"
+>
+  <span class="dialog__icon" aria-hidden="true">
+    <svg viewBox="0 0 24 24">
+      <path d="M4 7h16M10 11v6M14 11v6M5.5 7l1 12a2 2 0 002 2h7a2 2 0 002-2l1-12M9 7V4.5h6V7" />
+    </svg>
+  </span>
+  <h2 class="dialog__title" [id]="dialogId + '-title'">{{ heading }}</h2>
+  <p class="dialog__message" [id]="dialogId + '-message'">{{ message }}</p>
+
+  @if (error) {
+    <p class="dialog__error" role="alert">{{ error }}</p>
+  }
+
+  <div class="dialog__actions">
+    <button type="button" class="btn btn--ghost" [disabled]="busy" (click)="dismissed.emit()">
+      Annuler
+    </button>
+    <button type="button" class="btn btn--danger" [disabled]="busy" (click)="confirmed.emit()">
+      {{ busy ? busyLabel : confirmLabel }}
+    </button>
+  </div>
+</dialog>

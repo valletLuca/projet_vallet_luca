@@ -1,0 +1,34 @@
+<section class="breakdown" aria-labelledby="breakdown-types">
+  <h2 class="breakdown__heading" id="breakdown-types">Répartition par type</h2>
+
+  <div class="breakdown__bar" aria-hidden="true">
+    @for (share of shares; track share.value) {
+      <span
+        class="breakdown__segment"
+        [attr.data-type]="share.value"
+        [class.breakdown__segment--muted]="activeType && activeType !== share.value"
+        [style.flex-grow]="share.count"
+      ></span>
+    }
+  </div>
+
+  <ul class="breakdown__legend">
+    @for (share of shares; track share.value) {
+      <li>
+        <button
+          type="button"
+          class="breakdown__type"
+          [attr.data-type]="share.value"
+          [attr.aria-pressed]="activeType === share.value"
+          [class.breakdown__type--muted]="activeType && activeType !== share.value"
+          (click)="typeToggle.emit(share.value)"
+        >
+          <span class="breakdown__swatch" aria-hidden="true"></span>
+          <span class="breakdown__label">{{ share.label }}</span>
+          <span class="breakdown__count">{{ share.count }}</span>
+        </button>
+      </li>
+    }
+  </ul>
+  <p class="breakdown__hint">Cliquez sur un type pour filtrer la liste.</p>
+</section>

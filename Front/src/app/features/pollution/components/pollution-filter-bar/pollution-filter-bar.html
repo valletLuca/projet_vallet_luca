@@ -1,0 +1,55 @@
+<form class="filters" role="search" aria-label="Filtrer les signalements" [formGroup]="form">
+  <label class="filters__field filters__field--search">
+    <span class="filters__label">Recherche</span>
+    <span class="filters__control">
+      <svg class="filters__search-icon" viewBox="0 0 16 16" aria-hidden="true">
+        <circle cx="7" cy="7" r="4.5" />
+        <path d="M10.5 10.5L14 14" />
+      </svg>
+      <input
+        type="search"
+        class="filters__input"
+        placeholder="Titre, lieu, description…"
+        formControlName="search"
+        aria-keyshortcuts="/"
+        #searchInput
+      />
+      <kbd class="filters__kbd" aria-hidden="true">/</kbd>
+    </span>
+  </label>
+
+  <label class="filters__field filters__field--type">
+    <span class="filters__label">Type</span>
+    <select class="filters__input filters__select" formControlName="type">
+      <option value="">Tous les types</option>
+      @for (type of types; track type.value) {
+        <option [value]="type.value">{{ type.label }}</option>
+      }
+    </select>
+  </label>
+
+  <label class="filters__field">
+    <span class="filters__label">Observée du</span>
+    <input
+      type="date"
+      class="filters__input"
+      formControlName="from"
+      [max]="form.controls.to.value || null"
+    />
+  </label>
+
+  <label class="filters__field">
+    <span class="filters__label">Au</span>
+    <input
+      type="date"
+      class="filters__input"
+      formControlName="to"
+      [min]="form.controls.from.value || null"
+    />
+  </label>
+
+  <button type="button" class="filters__reset" [disabled]="!active" (click)="reset()">
+    <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8" /></svg>
+    Réinitialiser
+  </button>
+</form>
