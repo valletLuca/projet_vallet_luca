@@ -80,7 +80,6 @@ input[type='number'].field__input {
   color: var(--color-muted);
 }
 
-// Label flottant : champ actif, rempli, ou contrôle qui affiche toujours une valeur (select, date)
 .field__control:focus-within .field__label,
 .field__control:has(.field__input:not(:placeholder-shown)) .field__label,
 .field__control:has(select.field__input, input[type='date'].field__input) .field__label {

@@ -4,7 +4,6 @@ import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { Pollution, PollutionDeclaration } from '../models/pollution.model';
 
-/** Accès à l'API REST des pollutions. L'URL dépend de l'environnement (dev / prod). */
 @Injectable({ providedIn: 'root' })
 export class PollutionService {
   private readonly http = inject(HttpClient);
@@ -31,7 +30,6 @@ export class PollutionService {
   }
 }
 
-/** Multipart : seul format qui permet d'envoyer la photo importée avec les autres champs. */
 function toFormData(declaration: PollutionDeclaration): FormData {
   const { photoFile, ...fields } = declaration;
   const formData = new FormData();

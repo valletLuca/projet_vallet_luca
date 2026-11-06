@@ -38,7 +38,8 @@ export default function definePollutions(sequelize: Sequelize, _seq?: typeof Seq
       },
       title: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
+        validate: { len: { args: [1, 255], msg: "Le titre ne doit pas dépasser 255 caractères." } }
       },
       type: {
         type: DataTypes.STRING(20),
@@ -55,7 +56,8 @@ export default function definePollutions(sequelize: Sequelize, _seq?: typeof Seq
       },
       place: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
+        validate: { len: { args: [1, 255], msg: "Le lieu ne doit pas dépasser 255 caractères." } }
       },
       latitude: {
         type: DataTypes.DOUBLE,

@@ -1,6 +1,5 @@
 import { PollutionCreationAttributes } from "./pollutions.model";
 
-/** Jeu de données initial de la table pollution (le même que le backend simulé du Front). */
 export const SEED_POLLUTIONS: PollutionCreationAttributes[] = [
   {
     title: "Sacs plastiques sur la plage du Prado",

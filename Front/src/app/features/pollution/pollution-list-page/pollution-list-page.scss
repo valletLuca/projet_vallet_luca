@@ -30,7 +30,6 @@
   color: var(--color-muted);
 }
 
-// Vue d'ensemble : carte à gauche, répartition et activité à droite.
 .overview {
   display: grid;
   grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
@@ -94,71 +93,10 @@
   margin-top: 16px;
 }
 
-.notice {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin: 0;
-  padding: 10px 10px 10px 14px;
-  font-size: 14px;
-  color: var(--color-text);
-  background: color-mix(in srgb, var(--color-success) 10%, var(--color-surface));
-  border: 1px solid color-mix(in srgb, var(--color-success) 30%, transparent);
-  border-radius: var(--radius-sm);
-
-  > svg {
-    flex: none;
-    width: 16px;
-    height: 16px;
-    fill: none;
-    stroke: var(--color-success);
-    stroke-width: 2.2;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-  }
-
-  span {
-    flex: 1;
-    min-width: 0;
-    overflow-wrap: anywhere;
-  }
-}
-
-.notice__close {
-  display: grid;
-  flex: none;
-  place-items: center;
-  width: 28px;
-  height: 28px;
-  padding: 0;
-  color: var(--color-muted);
-  background: none;
-  border: 0;
-  border-radius: 6px;
-  cursor: pointer;
-
-  svg {
-    width: 14px;
-    height: 14px;
-    fill: none;
-    stroke: currentColor;
-    stroke-width: 2;
-    stroke-linecap: round;
-  }
-
-  &:hover {
-    color: var(--color-text);
-    background: rgb(16 24 40 / 0.06);
-  }
-
-  &:focus-visible {
-    outline: 2px solid var(--color-accent);
-  }
-}
-
 .toolbar {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   justify-content: space-between;
   gap: 16px;
   margin: 28px 0 16px;
@@ -223,7 +161,6 @@
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  // Toutes les lignes prennent la hauteur de la plus grande carte.
   grid-auto-rows: 1fr;
   gap: 20px;
   margin: 0;
@@ -231,7 +168,6 @@
   list-style: none;
 }
 
-// Pendant le chargement, il n'y a pas encore de barre d'outils au-dessus de la grille.
 .list-page__filters + .list-page__notice + .grid {
   margin-top: 24px;
 }

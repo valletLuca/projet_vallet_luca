@@ -7,7 +7,6 @@ interface TypeShare {
   count: number;
 }
 
-/** Répartition des pollutions par type, cliquable pour filtrer la liste. */
 @Component({
   selector: 'app-pollution-breakdown',
   templateUrl: './pollution-breakdown.html',
@@ -15,7 +14,6 @@ interface TypeShare {
 })
 export class PollutionBreakdown implements OnChanges {
   @Input({ required: true }) pollutions!: readonly Pollution[];
-  /** Type actuellement filtré, `''` si aucun. */
   @Input() activeType: PollutionType | '' = '';
   @Output() typeToggle = new EventEmitter<PollutionType>();
 

@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import { ValidationError } from "sequelize";
 import db from "../models";
 import { POLLUTION_TYPES, PollutionCreationAttributes } from "../models/pollutions.model";
+import { parseId, sendSaveError, sendServerError } from "../utils/http";
 
 const Pollutions = db.pollutions;
 
@@ -93,11 +93,6 @@ export const remove = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-function parseId(req: Request): number | null {
-  const id = Number(req.params.id);
-  return Number.isInteger(id) && id > 0 ? id : null;
-}
-
 function readFields(req: Request): PollutionCreationAttributes | string {
   const body = (req.body ?? {}) as Record<string, unknown>;
   const text = (key: string) => (typeof body[key] === "string" ? (body[key] as string).trim() : "");
@@ -107,8 +102,8 @@ function readFields(req: Request): PollutionCreationAttributes | string {
   const description = text("description");
   const observedAt = text("observedAt");
   const place = text("place");
-  const latitude = Number(text("latitude"));
-  const longitude = Number(text("longitude"));
+  const latitude = coordinate(body.latitude);
+  const longitude = coordinate(body.longitude);
 
   if (!title || !description || !place) {
     return "Les champs title, description et place sont obligatoires.";
@@ -116,10 +111,10 @@ function readFields(req: Request): PollutionCreationAttributes | string {
   if (!(POLLUTION_TYPES as readonly string[]).includes(type)) {
     return `Le type doit être l'un de : ${POLLUTION_TYPES.join(", ")}.`;
   }
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(observedAt)) {
+  if (!isIsoDate(observedAt)) {
     return "observedAt doit être une date au format AAAA-MM-JJ.";
   }
-  if (!text("latitude") || !text("longitude") || !Number.isFinite(latitude) || !Number.isFinite(longitude)) {
+  if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) {
     return "latitude et longitude doivent être des nombres.";
   }
 
@@ -139,17 +134,19 @@ function readFields(req: Request): PollutionCreationAttributes | string {
   };
 }
 
-function sendSaveError(res: Response, context: string, err: unknown): void {
-  if (err instanceof ValidationError) {
-    res.status(400).json({ message: `${context}: ${err.errors.map((e) => e.message).join(", ")}` });
-    return;
+function coordinate(value: unknown): number {
+  if (typeof value === "number") {
+    return value;
   }
-  sendServerError(res, context, err);
+  return typeof value === "string" && value.trim() ? Number(value) : Number.NaN;
 }
 
-function sendServerError(res: Response, context: string, err: unknown): void {
-  const message = err instanceof Error ? err.message : String(err);
-  res.status(500).json({ message: `${context}: ${message}` });
+function isIsoDate(value: string): boolean {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+    return false;
+  }
+  const date = new Date(`${value}T00:00:00.000Z`);
+  return !Number.isNaN(date.getTime()) && date.toISOString().startsWith(value);
 }
 
 export default { getAll, getById, create, update, remove };

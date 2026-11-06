@@ -15,7 +15,6 @@ import { debounceTime, distinctUntilChanged, map } from 'rxjs';
 import { EMPTY_FILTERS, hasActiveFilters, PollutionFilters } from '../../models/pollution-filters';
 import { POLLUTION_TYPES, PollutionType } from '../../models/pollution.model';
 
-/** Délai avant de filtrer, pour laisser finir la frappe dans la recherche. */
 const SEARCH_DEBOUNCE_MS = 150;
 
 @Component({
@@ -60,13 +59,11 @@ export class PollutionFilterBar implements OnInit {
     this.form.reset(EMPTY_FILTERS);
   }
 
-  /** Filtre sur un type, ou retire le filtre si ce type est déjà sélectionné. */
   toggleType(type: PollutionType): void {
     const { type: control } = this.form.controls;
     control.setValue(control.value === type ? '' : type);
   }
 
-  /** Raccourci « / » : place le curseur dans la recherche, sauf pendant une saisie. */
   @HostListener('document:keydown', ['$event'])
   onDocumentKeydown(event: KeyboardEvent): void {
     const target = event.target as HTMLElement;

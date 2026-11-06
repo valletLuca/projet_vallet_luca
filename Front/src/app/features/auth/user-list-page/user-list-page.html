@@ -1,0 +1,98 @@
+<main class="page">
+  <section class="card card--wide">
+    <header class="users__header">
+      <div>
+        <h1 class="card__title">Utilisateurs</h1>
+        @if (status() === 'ready') {
+          <p class="users__count" aria-live="polite">{{ countLabel() }}</p>
+        }
+      </div>
+      <a class="btn btn--primary btn--sm" routerLink="/inscription">
+        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 3v10M3 8h10" /></svg>
+        Ajouter
+      </a>
+    </header>
+
+    <div class="users__notice" aria-live="polite">
+      @if (notice(); as message) {
+        <p class="notice">
+          <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7" /></svg>
+          <span>{{ message }}</span>
+          <button type="button" class="notice__close" aria-label="Fermer le message" (click)="notice.set(null)">
+            <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8" /></svg>
+          </button>
+        </p>
+      }
+    </div>
+
+    @switch (status()) {
+      @case ('loading') {
+        <p class="users__loading" role="status">
+          <span class="btn__spinner" aria-hidden="true"></span>
+          Chargement des utilisateurs…
+        </p>
+      }
+      @case ('error') {
+        <app-page-state
+          kind="error"
+          heading="Impossible de charger les utilisateurs"
+          message="Le serveur ne répond pas. Vérifiez votre connexion puis réessayez."
+        >
+          <button type="button" class="btn btn--primary" (click)="load()">Réessayer</button>
+        </app-page-state>
+      }
+      @default {
+        @if (users().length) {
+          <ul class="users">
+            @for (user of users(); track user.id) {
+              <li class="users__item">
+                <span class="users__avatar" aria-hidden="true">
+                  {{ user.firstName[0] }}{{ user.lastName[0] }}
+                </span>
+                <div class="users__identity">
+                  <p class="users__name">
+                    {{ fullName(user) }}
+                    @if (user.id === currentUser()?.id) {
+                      <span class="badge">Vous</span>
+                    }
+                  </p>
+                  <p class="users__email">{{ user.email }}</p>
+                </div>
+                <p class="users__date">Inscription le {{ user.createdAt | date: 'longDate' }}</p>
+                <button
+                  type="button"
+                  class="btn btn--ghost btn--sm"
+                  [attr.aria-label]="'Supprimer ' + fullName(user)"
+                  (click)="askDelete(user)"
+                >
+                  Supprimer
+                </button>
+              </li>
+            }
+          </ul>
+        } @else {
+          <app-page-state
+            heading="Aucun utilisateur pour l'instant"
+            message="Les comptes créés apparaîtront ici."
+          >
+            <a class="btn btn--primary" routerLink="/inscription">Créer un compte</a>
+          </app-page-state>
+        }
+      }
+    }
+  </section>
+</main>
+
+<app-confirm-dialog
+  heading="Supprimer ce compte ?"
+  [message]="
+    pendingDelete() ? 'Le compte « ' + fullName(pendingDelete()!) + ' » sera définitivement supprimé.' : ''
+  "
+  confirmLabel="Supprimer"
+  busyLabel="Suppression…"
+  [open]="pendingDelete() !== null"
+  [busy]="deleting()"
+  [error]="deleteError()"
+  (confirmed)="confirmDelete()"
+  (dismissed)="cancelDelete()"
+/>

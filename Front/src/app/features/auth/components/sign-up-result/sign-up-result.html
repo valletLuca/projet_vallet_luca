@@ -1,0 +1,5 @@
+<h1 class="welcome">Bienvenue, {{ firstName }} !</h1>
+<p class="welcome__text">Votre compte est créé. Connectez-vous pour continuer.</p>
+<a class="btn btn--primary btn--block" routerLink="/connexion" [state]="{ registeredEmail: email }">
+  Se connecter
+</a>

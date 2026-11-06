@@ -20,9 +20,7 @@ import { PollutionService } from '../services/pollution.service';
 type LoadStatus = 'loading' | 'ready' | 'error';
 type ListView = 'grid' | 'timeline';
 
-/** Nombre de cartes fantômes affichées pendant le chargement. */
 const SKELETON_COUNT = 6;
-/** Clé de stockage local de la vue choisie (préférence du visiteur). */
 const VIEW_STORAGE_KEY = 'sillage.pollutions.view';
 
 @Component({
@@ -52,10 +50,8 @@ export class PollutionListPage implements OnInit {
   protected readonly pollutions = signal<Pollution[]>([]);
   protected readonly filters = signal<PollutionFilters>(EMPTY_FILTERS);
   protected readonly view = signal<ListView>(readStoredView());
-  /** Pollution survolée, synchronisée entre la carte et la liste. */
   protected readonly activeId = signal<number | null>(null);
 
-  /** Les plus récentes d'abord. */
   protected readonly filtered = computed(() =>
     this.pollutions()
       .filter((pollution) => matchesFilters(pollution, this.filters()))
@@ -69,7 +65,6 @@ export class PollutionListPage implements OnInit {
     return this.filtering() ? `${label} sur ${this.pollutions().length}` : label;
   });
 
-  // Suppression : pollution en attente de confirmation, requête en cours, erreur éventuelle.
   protected readonly pendingDelete = signal<Pollution | null>(null);
   protected readonly deleting = signal(false);
   protected readonly deleteError = signal<string | null>(null);
@@ -114,7 +109,6 @@ export class PollutionListPage implements OnInit {
     try {
       localStorage.setItem(VIEW_STORAGE_KEY, view);
     } catch {
-      // Stockage indisponible (navigation privée…) : le choix ne sera simplement pas retenu.
     }
   }
 
