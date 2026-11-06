@@ -1,0 +1,19 @@
+<main class="page">
+  @if (createdUser(); as user) {
+    <section class="card">
+      <app-sign-up-result [firstName]="user.firstName" />
+    </section>
+  } @else {
+    <section class="card">
+      <header class="card__header">
+        <span class="card__eyebrow">Inscription</span>
+        <h1 class="card__title">Créer un compte</h1>
+        <p class="card__subtitle">
+          Rejoignez Sillage pour signaler et suivre les pollutions près de chez vous.
+        </p>
+      </header>
+
+      <app-sign-up-form [pending]="pending()" [error]="error()" (submitted)="onSubmit($event)" />
+    </section>
+  }
+</main>

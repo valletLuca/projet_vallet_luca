@@ -1,0 +1,177 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="sign-up-form" [attr.aria-busy]="pending">
+  <div class="names">
+    <app-form-field
+      label="Prénom"
+      fieldId="firstName"
+      [control]="controls.firstName"
+      [messages]="{
+        required: 'Le prénom est requis.',
+        maxlength: 'Le prénom ne doit pas dépasser ' + limits.nameMaxLength + ' caractères.',
+      }"
+    >
+      <input
+        id="firstName"
+        type="text"
+        class="field__input"
+        placeholder=" "
+        autocomplete="given-name"
+        [maxlength]="limits.nameMaxLength"
+        formControlName="firstName"
+        [attr.aria-invalid]="controls.firstName.invalid && controls.firstName.touched"
+        aria-describedby="firstName-error"
+      />
+    </app-form-field>
+
+    <app-form-field
+      label="Nom"
+      fieldId="lastName"
+      [control]="controls.lastName"
+      [messages]="{
+        required: 'Le nom est requis.',
+        maxlength: 'Le nom ne doit pas dépasser ' + limits.nameMaxLength + ' caractères.',
+      }"
+    >
+      <input
+        id="lastName"
+        type="text"
+        class="field__input"
+        placeholder=" "
+        autocomplete="family-name"
+        [maxlength]="limits.nameMaxLength"
+        formControlName="lastName"
+        [attr.aria-invalid]="controls.lastName.invalid && controls.lastName.touched"
+        aria-describedby="lastName-error"
+      />
+    </app-form-field>
+  </div>
+
+  <app-form-field
+    label="Adresse e-mail"
+    fieldId="email"
+    [control]="controls.email"
+    [messages]="{
+      required: 'L\'adresse e-mail est requise.',
+      email: 'Cette adresse e-mail n\'est pas valide.',
+      pattern: 'Cette adresse e-mail n\'est pas valide.',
+      maxlength: 'L\'adresse e-mail est trop longue.',
+      emailTaken: 'Un compte existe déjà avec cette adresse e-mail.',
+    }"
+  >
+    <input
+      id="email"
+      type="email"
+      class="field__input"
+      placeholder=" "
+      inputmode="email"
+      autocomplete="email"
+      formControlName="email"
+      [attr.aria-invalid]="controls.email.invalid && controls.email.touched"
+      aria-describedby="email-error"
+    />
+  </app-form-field>
+
+  <app-form-field
+    label="Mot de passe"
+    fieldId="password"
+    [control]="controls.password"
+    [messages]="{
+      required: 'Le mot de passe est requis.',
+      minlength: 'Le mot de passe doit contenir au moins ' + limits.passwordMinLength + ' caractères.',
+      maxlength: 'Le mot de passe ne doit pas dépasser ' + limits.passwordMaxLength + ' caractères.',
+      passwordWeak: 'Le mot de passe doit contenir au moins une lettre et un chiffre.',
+    }"
+  >
+    <input
+      id="password"
+      class="field__input field__input--with-action"
+      placeholder=" "
+      autocomplete="new-password"
+      [maxlength]="limits.passwordMaxLength"
+      formControlName="password"
+      [type]="passwordVisible ? 'text' : 'password'"
+      [attr.aria-invalid]="controls.password.invalid && controls.password.touched"
+      aria-describedby="password-rules password-error"
+    />
+    <button
+      type="button"
+      class="password-toggle"
+      [attr.aria-label]="passwordVisible ? 'Masquer le mot de passe' : 'Afficher le mot de passe'"
+      [attr.aria-pressed]="passwordVisible"
+      [disabled]="pending"
+      (click)="togglePasswordVisibility()"
+    >
+      @if (passwordVisible) {
+        <svg viewBox="0 0 16 16" aria-hidden="true">
+          <path d="M2 2l12 12M6.6 6.6a2 2 0 002.8 2.8M4.2 4.3C2.9 5.2 1.9 6.5 1.5 8c.9 3 3.5 5 6.5 5 1.3 0 2.5-.4 3.6-1M7 3.1c.3 0 .7-.1 1-.1 3 0 5.6 2 6.5 5-.3.9-.7 1.7-1.3 2.4" />
+        </svg>
+      } @else {
+        <svg viewBox="0 0 16 16" aria-hidden="true">
+          <path d="M1.5 8c.9-3 3.5-5 6.5-5s5.6 2 6.5 5c-.9 3-3.5 5-6.5 5s-5.6-2-6.5-5z" />
+          <circle cx="8" cy="8" r="2" />
+        </svg>
+      }
+    </button>
+  </app-form-field>
+
+  <ul class="rules" id="password-rules" aria-label="Exigences du mot de passe">
+    @for (rule of passwordRules; track rule.label) {
+      <li class="rules__item" [class.rules__item--ok]="rule.ok">
+        <svg viewBox="0 0 16 16" aria-hidden="true">
+          @if (rule.ok) {
+            <path d="M3.5 8.5l3 3 6-7" />
+          } @else {
+            <circle cx="8" cy="8" r="2.5" />
+          }
+        </svg>
+        {{ rule.label }}
+        <span class="visually-hidden">{{ rule.ok ? '(respecté)' : '(non respecté)' }}</span>
+      </li>
+    }
+  </ul>
+
+  <app-form-field
+    label="Confirmer le mot de passe"
+    fieldId="confirmPassword"
+    [control]="controls.confirmPassword"
+    [messages]="{
+      required: 'Veuillez confirmer le mot de passe.',
+      mismatch: 'Les mots de passe ne correspondent pas.',
+    }"
+  >
+    <input
+      id="confirmPassword"
+      class="field__input"
+      placeholder=" "
+      autocomplete="new-password"
+      [maxlength]="limits.passwordMaxLength"
+      formControlName="confirmPassword"
+      [type]="passwordVisible ? 'text' : 'password'"
+      [attr.aria-invalid]="controls.confirmPassword.invalid && controls.confirmPassword.touched"
+      aria-describedby="confirmPassword-error"
+    />
+  </app-form-field>
+
+  @if (bannerMessage; as message) {
+    <div class="alert" role="alert">
+      <svg viewBox="0 0 16 16" aria-hidden="true">
+        <circle cx="8" cy="8" r="7" />
+        <path d="M8 4.5v4M8 11v.5" />
+      </svg>
+      <p class="alert__text">
+        <strong>Inscription impossible</strong>
+        {{ message }}
+      </p>
+    </div>
+  }
+
+  <div class="actions">
+    <button type="submit" class="btn btn--primary" [disabled]="pending || form.invalid">
+      @if (pending) {
+        <span class="spinner" aria-hidden="true"></span>
+        Création du compte…
+      } @else {
+        Créer mon compte
+      }
+    </button>
+  </div>
+</form>
