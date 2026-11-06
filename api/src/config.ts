@@ -10,7 +10,6 @@ export interface AppConfig {
   BDD: DatabaseConfig;
 }
 
-// Utilisé seulement si DATABASE_URL pas défini
 export const config: AppConfig = {
   BDD: {
     host: process.env.DB_HOST || "localhost",

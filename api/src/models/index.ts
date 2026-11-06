@@ -1,6 +1,7 @@
 import { Sequelize } from "sequelize";
 import { BDD } from "../config";
 import definePollutions, { PollutionModel } from "./pollutions.model";
+import defineUsers, { UserModel } from "./users.model";
 
 const connectionUrl = process.env.DATABASE_URL || `postgres://${BDD.user}:${BDD.password}@${BDD.host}:${BDD.port}/${BDD.bdname}`;
 
@@ -27,12 +28,14 @@ export interface Database {
   Sequelize: typeof Sequelize;
   sequelize: Sequelize;
   pollutions: PollutionModel;
+  users: UserModel;
 }
 
 export const db: Database = {
   Sequelize,
   sequelize,
-  pollutions: definePollutions(sequelize, Sequelize)
+  pollutions: definePollutions(sequelize, Sequelize),
+  users: defineUsers(sequelize, Sequelize)
 };
 
 export default db;

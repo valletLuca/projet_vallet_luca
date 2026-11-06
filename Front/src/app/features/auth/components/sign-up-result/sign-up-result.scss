@@ -1,0 +1,28 @@
+:host {
+  display: block;
+  animation: fade-up 0.4s var(--ease) both;
+}
+
+.welcome {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+
+.welcome__text {
+  margin: 8px 0 24px;
+  font-size: 15px;
+  color: var(--color-muted);
+  text-align: center;
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}

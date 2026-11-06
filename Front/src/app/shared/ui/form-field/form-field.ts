@@ -5,7 +5,6 @@ import { AbstractControl } from '@angular/forms';
   selector: 'app-form-field',
   templateUrl: './form-field.html',
   styleUrl: './form-field.scss',
-  // Les styles doivent atteindre le champ projeté : classes préfixées `field`.
   encapsulation: ViewEncapsulation.None,
 })
 export class FormField {

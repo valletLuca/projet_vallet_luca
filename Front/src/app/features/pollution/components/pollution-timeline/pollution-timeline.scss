@@ -50,7 +50,6 @@
   list-style: none;
 }
 
-// Colonnes : date | nœud sur le fil | contenu | action
 .entry {
   position: relative;
   display: grid;
@@ -62,7 +61,6 @@
   border-radius: var(--radius-sm);
   transition: background-color 0.2s var(--ease);
 
-  // Le fil vertical, interrompu en haut et en bas de chaque mois.
   &::before {
     content: '';
     position: absolute;
@@ -146,7 +144,6 @@
   overflow-wrap: anywhere;
 }
 
-// Lien étiré : toute la ligne est cliquable.
 .entry__link {
   color: inherit;
   text-decoration: none;
@@ -229,7 +226,6 @@
     box-shadow: 0 0 0 3px var(--color-danger-ring);
   }
 
-  // Pas de survol sur écran tactile : le bouton reste visible.
   @media (hover: none) {
     opacity: 1;
   }

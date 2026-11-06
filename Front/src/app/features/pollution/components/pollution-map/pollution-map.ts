@@ -2,10 +2,8 @@ import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core
 import { Pollution, pollutionTypeLabel, PollutionType } from '../../models/pollution.model';
 import { BOUNDS, CORSICA, isInside, LonLat, MAINLAND } from './france-geometry';
 
-/** Projection équirectangulaire corrigée à la latitude moyenne de la France. */
 const LON_SCALE = Math.cos((46.5 * Math.PI) / 180);
 const PX_PER_DEGREE = 40;
-/** Écart entre deux points de la trame, en pixels. */
 const DOT_SPACING = 6;
 
 export const MAP_WIDTH = (BOUNDS.east - BOUNDS.west) * LON_SCALE * PX_PER_DEGREE;
@@ -31,7 +29,6 @@ function project(lon: number, lat: number): Point {
   };
 }
 
-/** Trame de points calculée une seule fois : chaque point est testé contre les contours. */
 const DOTS: readonly Point[] = (() => {
   const dots: Point[] = [];
   for (let y = DOT_SPACING / 2; y < MAP_HEIGHT; y += DOT_SPACING) {
@@ -48,7 +45,6 @@ const DOTS: readonly Point[] = (() => {
   return dots;
 })();
 
-/** Carte en trame de points : une épingle par pollution, colorée selon son type. */
 @Component({
   selector: 'app-pollution-map',
   templateUrl: './pollution-map.html',
@@ -56,7 +52,6 @@ const DOTS: readonly Point[] = (() => {
 })
 export class PollutionMap implements OnChanges {
   @Input({ required: true }) pollutions!: readonly Pollution[];
-  /** Pollutions retenues par les filtres ; les autres sont estompées. */
   @Input({ required: true }) visibleIds!: ReadonlySet<number>;
   @Input() activeId: number | null = null;
   @Output() activeIdChange = new EventEmitter<number | null>();
@@ -67,7 +62,6 @@ export class PollutionMap implements OnChanges {
   protected readonly mapHeight = MAP_HEIGHT;
   protected readonly viewBox = `0 0 ${MAP_WIDTH.toFixed(1)} ${MAP_HEIGHT.toFixed(1)}`;
   protected pins: Pin[] = [];
-  /** Signalements dont les coordonnées tombent hors de la métropole. */
   protected outside = 0;
 
   get activePin(): Pin | undefined {
@@ -92,7 +86,6 @@ export class PollutionMap implements OnChanges {
         dimmed: !this.visibleIds.has(pollution.id),
         delay: index * 60,
       }))
-      // Les épingles retenues sont dessinées en dernier, donc au-dessus.
       .sort((a, b) => Number(b.dimmed) - Number(a.dimmed));
   }
 }

@@ -11,7 +11,6 @@ import { PollutionService } from '../services/pollution.service';
 
 type DetailStatus = 'loading' | 'ready' | 'not-found' | 'error';
 
-/** Transmis par la page de déclaration via l'état de navigation. */
 export type SavedState = 'created' | 'updated';
 
 const SAVED_MESSAGES: Record<SavedState, string> = {
@@ -26,7 +25,6 @@ const SAVED_MESSAGES: Record<SavedState, string> = {
   styleUrl: './pollution-detail-page.scss',
 })
 export class PollutionDetailPage implements OnChanges {
-  /** Paramètre de route `:id`. */
   @Input({ required: true }) id!: string;
 
   private readonly pollutionService = inject(PollutionService);

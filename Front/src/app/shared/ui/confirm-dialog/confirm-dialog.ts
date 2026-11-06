@@ -10,7 +10,6 @@ import {
 
 let nextId = 0;
 
-/** Boîte de confirmation modale basée sur l'élément natif `<dialog>` (focus et Échap gérés). */
 @Component({
   selector: 'app-confirm-dialog',
   templateUrl: './confirm-dialog.html',
@@ -40,7 +39,6 @@ export class ConfirmDialog implements OnChanges {
     }
   }
 
-  /** Touche Échap : c'est le parent qui ferme, via `open`. */
   onCancel(event: Event): void {
     event.preventDefault();
     if (!this.busy) {

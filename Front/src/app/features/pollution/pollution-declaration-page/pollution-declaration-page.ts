@@ -13,10 +13,6 @@ import { PollutionService } from '../services/pollution.service';
 
 type LoadStatus = 'loading' | 'ready' | 'not-found' | 'error';
 
-/**
- * Création (`/pollutions/nouvelle`) ou modification (`/pollutions/:id/modifier`) d'une pollution.
- * Le mode dépend de la présence du paramètre de route `id`.
- */
 @Component({
   selector: 'app-pollution-declaration-page',
   imports: [RouterLink, PageState, StepperHeader, PollutionForm],
@@ -24,7 +20,6 @@ type LoadStatus = 'loading' | 'ready' | 'not-found' | 'error';
   styleUrl: './pollution-declaration-page.scss',
 })
 export class PollutionDeclarationPage implements OnChanges {
-  /** Paramètre de route `:id`, absent en création. */
   @Input() id?: string;
 
   private readonly pollutionService = inject(PollutionService);

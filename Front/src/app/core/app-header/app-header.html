@@ -23,6 +23,27 @@
         Signalements
       </a>
       <a
+        class="header__link"
+        routerLink="/utilisateurs"
+        routerLinkActive="header__link--active"
+        ariaCurrentWhenActive="page"
+      >
+        Utilisateurs
+      </a>
+      @if (currentUser(); as user) {
+        <span class="header__user">{{ user.firstName }}</span>
+        <button type="button" class="header__link header__logout" (click)="logout()">Déconnexion</button>
+      } @else {
+        <a
+          class="header__link"
+          routerLink="/connexion"
+          routerLinkActive="header__link--active"
+          ariaCurrentWhenActive="page"
+        >
+          Connexion
+        </a>
+      }
+      <a
         class="btn btn--primary btn--sm header__cta"
         routerLink="/pollutions/nouvelle"
         ariaCurrentWhenActive="page"

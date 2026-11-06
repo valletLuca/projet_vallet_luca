@@ -1,31 +1,6 @@
-import express, { Application, Request, Response } from "express";
-import cors, { CorsOptions } from "cors";
+import app from "./app";
 import db from "./models";
 import { SEED_POLLUTIONS } from "./models/seed";
-import initRoutes from "./routes";
-
-const app: Application = express();
-
-const corsOptions: CorsOptions = {
-  origin: "*",
-  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-  allowedHeaders: "Content-Type, Authorization",
-  exposedHeaders: "Authorization"
-};
-
-app.use(cors(corsOptions));
-
-app.use(express.json());
-
-app.use(express.urlencoded({ extended: true }));
-
-app.get("/", (_req: Request, res: Response) => {
-  res.json({ message: "Welcome to Pollution API." });
-});
-
-app.get("/health", (_req: Request, res: Response) => {
-  res.status(200).json({ status: "OK" });
-});
 
 db.sequelize
   .sync()
@@ -44,9 +19,6 @@ db.sequelize
   .catch((err: Error) => {
     console.log("Failed to sync db: " + err.message);
   });
-
-
-initRoutes(app);
 
 const PORT = Number(process.env.PORT) || 3000;
 const HOST = "0.0.0.0";
