@@ -45,7 +45,7 @@ describe('AppHeader', () => {
     expect(text()).toContain('Déconnexion');
   });
 
-  it('déconnecte et revient aux signalements', () => {
+  it('déconnecte et revient à la connexion', () => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(ALICE));
     open();
     const navigate = spyOn(TestBed.inject(Router), 'navigate').and.resolveTo(true);
@@ -58,6 +58,6 @@ describe('AppHeader', () => {
 
     expect(text()).toContain('Connexion');
     expect(text()).not.toContain('Déconnexion');
-    expect(navigate).toHaveBeenCalledWith(['/pollutions']);
+    expect(navigate).toHaveBeenCalledWith(['/connexion']);
   });
 });

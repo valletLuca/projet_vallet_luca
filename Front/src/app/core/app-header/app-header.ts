@@ -22,6 +22,6 @@ export class AppHeader {
 
   logout(): void {
     this.authService.logout();
-    this.router.navigate(['/pollutions']);
+    this.router.navigate(['/connexion']);
   }
 }
