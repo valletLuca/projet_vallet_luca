@@ -34,7 +34,6 @@
   }
 }
 
-// Le vrai champ fichier est masqué mais reste focusable au clavier.
 .picker__input {
   position: absolute;
   width: 1px;
@@ -84,7 +83,6 @@
   color: var(--color-muted);
 }
 
-// Pas de glisser-déposer sur écran tactile
 @media (hover: none) {
   .picker__hint-drag {
     display: none;

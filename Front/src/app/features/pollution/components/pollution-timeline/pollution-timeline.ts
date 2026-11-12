@@ -4,12 +4,10 @@ import { RouterLink } from '@angular/router';
 import { Pollution, pollutionTypeLabel, PollutionType } from '../../models/pollution.model';
 
 interface MonthGroup {
-  /** Premier jour du mois, `yyyy-MM-01`. */
   month: string;
   pollutions: Pollution[];
 }
 
-/** Vue chronologique : signalements regroupés par mois d'observation, déjà triés par le parent. */
 @Component({
   selector: 'app-pollution-timeline',
   imports: [DatePipe, DecimalPipe, RouterLink],

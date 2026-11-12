@@ -1,4 +1,3 @@
-/** Contours simplifiés de la France métropolitaine, en [longitude, latitude]. */
 export type LonLat = readonly [number, number];
 
 export const MAINLAND: readonly LonLat[] = [
@@ -16,10 +15,8 @@ export const CORSICA: readonly LonLat[] = [
   [9.4, 43.0], [9.55, 42.1], [9.2, 41.37], [8.6, 41.9], [8.7, 42.6],
 ];
 
-/** Emprise de la carte (Corse comprise). */
 export const BOUNDS = { west: -5.2, east: 9.8, north: 51.3, south: 41.2 } as const;
 
-/** Lancer de rayon : le point est-il à l'intérieur du polygone ? */
 export function isInside([lon, lat]: LonLat, polygon: readonly LonLat[]): boolean {
   let inside = false;
   for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {

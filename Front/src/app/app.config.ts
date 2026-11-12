@@ -1,5 +1,5 @@
 import { registerLocaleData } from '@angular/common';
-import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { provideHttpClient } from '@angular/common/http';
 import localeFr from '@angular/common/locales/fr';
 import {
   ApplicationConfig,
@@ -8,9 +8,7 @@ import {
   provideZoneChangeDetection,
 } from '@angular/core';
 import { provideRouter, withComponentInputBinding, withInMemoryScrolling } from '@angular/router';
-import { environment } from '../environments/environment';
 import { routes } from './app.routes';
-import { mockApiInterceptor } from './core/mock-api/mock-api.interceptor';
 
 registerLocaleData(localeFr);
 
@@ -23,7 +21,7 @@ export const appConfig: ApplicationConfig = {
       withComponentInputBinding(),
       withInMemoryScrolling({ scrollPositionRestoration: 'top' }),
     ),
-    provideHttpClient(withInterceptors(environment.mockApi ? [mockApiInterceptor] : [])),
+    provideHttpClient(),
     { provide: LOCALE_ID, useValue: 'fr' },
   ],
 };

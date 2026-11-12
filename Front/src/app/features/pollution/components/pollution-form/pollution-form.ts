@@ -14,6 +14,7 @@ import {
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FormField } from '../../../../shared/ui/form-field/form-field';
 import { StepperStep } from '../../../../shared/ui/stepper-header/stepper-header';
+import { notBlankValidator } from '../../../../shared/validators/not-blank.validator';
 import {
   PhotoSource,
   POLLUTION_TYPES,
@@ -22,13 +23,11 @@ import {
 } from '../../models/pollution.model';
 import { formatFileSize } from '../../utils/file-size';
 import { imageFileValidator, MAX_PHOTO_BYTES } from '../../validators/image-file.validator';
-import { notBlankValidator } from '../../validators/not-blank.validator';
 import { notInFutureValidator, todayIso } from '../../validators/not-in-future.validator';
 import { validNumberValidator } from '../../validators/valid-number.validator';
 import { PhotoPicker } from '../photo-picker/photo-picker';
 import { PhotoPreview } from '../photo-preview/photo-preview';
 
-/** Durée de l'animation de changement d'étape (voir pollution-form.scss). */
 const STEP_TRANSITION_MS = 320;
 
 @Component({
@@ -43,7 +42,6 @@ export class PollutionForm implements OnInit, OnChanges {
   @Input() initialValue: PollutionDeclaration | null = null;
   @Input() autoFocus = false;
   @Input() editing = false;
-  /** Requête d'enregistrement en cours : la soumission est bloquée. */
   @Input() saving = false;
   @Output() stepChange = new EventEmitter<number>();
   @Output() declared = new EventEmitter<PollutionDeclaration>();
@@ -55,8 +53,6 @@ export class PollutionForm implements OnInit, OnChanges {
   protected readonly today = todayIso();
   protected direction: 'forward' | 'backward' = 'forward';
 
-  // Empêche un double-clic sur « Suivant » de valider aussitôt l'étape suivante
-  // (le bouton « Déclarer » apparaît au même endroit).
   private transitioning = false;
 
   readonly form = new FormGroup({
@@ -94,16 +90,25 @@ export class PollutionForm implements OnInit, OnChanges {
         validators: [Validators.required, notBlankValidator()],
       }),
       latitude: new FormControl<number | null>(null, {
-        validators: [Validators.required, validNumberValidator()],
+        validators: [
+          Validators.required,
+          validNumberValidator(),
+          Validators.min(-90),
+          Validators.max(90),
+        ],
       }),
       longitude: new FormControl<number | null>(null, {
-        validators: [Validators.required, validNumberValidator()],
+        validators: [
+          Validators.required,
+          validNumberValidator(),
+          Validators.min(-180),
+          Validators.max(180),
+        ],
       }),
     }),
     evidence: new FormGroup({
       source: new FormControl<PhotoSource>('url', { nonNullable: true }),
       photoUrl: new FormControl('', { nonNullable: true }),
-      // Désactivé tant que la source « url » est sélectionnée (voir applyPhotoSource).
       photoFile: new FormControl<File | null>(
         { value: null, disabled: true },
         { validators: [imageFileValidator(MAX_PHOTO_BYTES)] },
@@ -166,7 +171,6 @@ export class PollutionForm implements OnInit, OnChanges {
     }
   }
 
-  /** Seule la source choisie est validée : l'autre contrôle est désactivé, sa valeur conservée. */
   applyPhotoSource(): void {
     const { source, photoFile, photoUrl } = this.evidence;
     if (source.value === 'upload') {
@@ -201,7 +205,6 @@ export class PollutionForm implements OnInit, OnChanges {
       return;
     }
 
-    // Verrou de soumission : le bouton est désactivé, mais on revérifie côté code.
     if (this.form.invalid || this.saving) {
       return;
     }

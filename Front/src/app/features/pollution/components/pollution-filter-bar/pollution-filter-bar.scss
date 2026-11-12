@@ -133,7 +133,6 @@
   pointer-events: none;
   transition: opacity 0.2s var(--ease);
 
-  // Inutile une fois dans le champ ou sur écran tactile.
   .filters__control:focus-within &,
   .filters__control:has(.filters__input:not(:placeholder-shown)) & {
     opacity: 0;

@@ -1,5 +1,4 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()" class="pollution-form" [attr.data-direction]="direction">
-  <!-- Étape 1 : Quoi -->
   <fieldset formGroupName="what" class="step" data-step="0" [class.step--active]="currentStep === 0">
     <legend class="step__legend">
       <span class="step__title">{{ steps[0].title }}</span>
@@ -76,7 +75,6 @@
     </app-form-field>
   </fieldset>
 
-  <!-- Étape 2 : Où et quand -->
   <fieldset formGroupName="where" class="step" data-step="1" [class.step--active]="currentStep === 1">
     <legend class="step__legend">
       <span class="step__title">{{ steps[1].title }}</span>
@@ -130,6 +128,8 @@
         [messages]="{
           required: 'La latitude est requise (nombre).',
           invalidNumber: 'La latitude doit être un nombre valide.',
+          min: 'La latitude doit être comprise entre -90 et 90.',
+          max: 'La latitude doit être comprise entre -90 et 90.',
         }"
       >
         <input
@@ -152,6 +152,8 @@
         [messages]="{
           required: 'La longitude est requise (nombre).',
           invalidNumber: 'La longitude doit être un nombre valide.',
+          min: 'La longitude doit être comprise entre -180 et 180.',
+          max: 'La longitude doit être comprise entre -180 et 180.',
         }"
       >
         <input
@@ -169,7 +171,6 @@
     </div>
   </fieldset>
 
-  <!-- Étape 3 : Preuve -->
   <fieldset formGroupName="evidence" class="step" data-step="2" [class.step--active]="currentStep === 2">
     <legend class="step__legend">
       <span class="step__title">{{ steps[2].title }}</span>

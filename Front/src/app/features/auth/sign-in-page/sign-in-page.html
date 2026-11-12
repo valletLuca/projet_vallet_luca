@@ -1,0 +1,15 @@
+<main class="page">
+  <section class="card">
+    <header class="card__header">
+      <span class="card__eyebrow">Connexion</span>
+      <h1 class="card__title">Se connecter</h1>
+    </header>
+
+    <app-sign-in-form
+      [email]="registeredEmail"
+      [pending]="pending()"
+      [error]="error()"
+      (submitted)="onSubmit($event)"
+    />
+  </section>
+</main>

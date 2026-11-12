@@ -35,7 +35,7 @@ export class PhotoPicker implements OnChanges, OnDestroy {
   onInputChange(event: Event): void {
     const input = event.target as HTMLInputElement;
     const file = input.files?.[0];
-    input.value = ''; // permet de re-sélectionner le même fichier
+    input.value = '';
     if (file) {
       this.fileChange.emit(file);
     }

@@ -3,7 +3,6 @@ import { Component, Input } from '@angular/core';
 import { Pollution, pollutionTypeLabel } from '../../models/pollution.model';
 import { PhotoPreview } from '../photo-preview/photo-preview';
 
-/** Fiche d'une pollution. Les boutons d'action sont projetés par le parent. */
 @Component({
   selector: 'app-pollution-recap',
   imports: [DatePipe, DecimalPipe, PhotoPreview],
@@ -12,7 +11,6 @@ import { PhotoPreview } from '../photo-preview/photo-preview';
 })
 export class PollutionRecap {
   @Input({ required: true }) pollution!: Pollution;
-  /** Message de confirmation affiché au-dessus du titre (ex. après un enregistrement). */
   @Input() status: string | null = null;
 
   get typeLabel(): string {
