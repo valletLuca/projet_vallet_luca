@@ -59,6 +59,13 @@
   padding: 18px 20px 20px;
 }
 
+.card-item__badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+}
+
 .card-item__title {
   margin: 0;
   font-size: 16px;

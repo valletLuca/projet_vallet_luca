@@ -14,6 +14,7 @@ const DECLARATION: PollutionDeclaration = {
   place: 'Marseille',
   latitude: 43.26,
   longitude: 5.37,
+  dangerLevel: 42,
   photoUrl: null,
   photoFile: null,
 };
@@ -56,6 +57,7 @@ describe('PollutionService', () => {
     expect(request.request.method).toBe('POST');
     expect(body.get('title')).toBe(DECLARATION.title);
     expect(body.get('latitude')).toBe('43.26');
+    expect(body.get('dangerLevel')).toBe('42');
     expect(body.has('photoUrl')).toBeFalse();
     expect(body.has('photo')).toBeFalse();
     request.flush({});

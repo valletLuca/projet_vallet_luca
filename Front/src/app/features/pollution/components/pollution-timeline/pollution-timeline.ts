@@ -1,6 +1,8 @@
 import { DatePipe, DecimalPipe } from '@angular/common';
 import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { HighlightPollutionDirective } from '../../../../shared/directives/highlight-pollution.directive';
+import { PollutionLevelPipe } from '../../../../shared/pipes/pollution-level.pipe';
 import { Pollution, pollutionTypeLabel, PollutionType } from '../../models/pollution.model';
 
 interface MonthGroup {
@@ -10,7 +12,7 @@ interface MonthGroup {
 
 @Component({
   selector: 'app-pollution-timeline',
-  imports: [DatePipe, DecimalPipe, RouterLink],
+  imports: [DatePipe, DecimalPipe, RouterLink, PollutionLevelPipe, HighlightPollutionDirective],
   templateUrl: './pollution-timeline.html',
   styleUrl: './pollution-timeline.scss',
 })

@@ -12,10 +12,14 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { HighlightPollutionDirective } from '../../../../shared/directives/highlight-pollution.directive';
+import { PollutionLevelPipe } from '../../../../shared/pipes/pollution-level.pipe';
 import { FormField } from '../../../../shared/ui/form-field/form-field';
 import { StepperStep } from '../../../../shared/ui/stepper-header/stepper-header';
 import { notBlankValidator } from '../../../../shared/validators/not-blank.validator';
 import {
+  DANGER_LEVEL_MAX,
+  DANGER_LEVEL_MIN,
   PhotoSource,
   POLLUTION_TYPES,
   PollutionDeclaration,
@@ -32,7 +36,14 @@ const STEP_TRANSITION_MS = 320;
 
 @Component({
   selector: 'app-pollution-form',
-  imports: [ReactiveFormsModule, FormField, PhotoPicker, PhotoPreview],
+  imports: [
+    ReactiveFormsModule,
+    FormField,
+    PhotoPicker,
+    PhotoPreview,
+    PollutionLevelPipe,
+    HighlightPollutionDirective,
+  ],
   templateUrl: './pollution-form.html',
   styleUrl: './pollution-form.scss',
 })
@@ -50,6 +61,8 @@ export class PollutionForm implements OnInit, OnChanges {
   private readonly injector = inject(Injector);
 
   protected readonly types = POLLUTION_TYPES;
+  protected readonly dangerLevelMin = DANGER_LEVEL_MIN;
+  protected readonly dangerLevelMax = DANGER_LEVEL_MAX;
   protected readonly today = todayIso();
   protected direction: 'forward' | 'backward' = 'forward';
 
@@ -69,6 +82,15 @@ export class PollutionForm implements OnInit, OnChanges {
       type: new FormControl<PollutionType | ''>('', {
         nonNullable: true,
         validators: [Validators.required],
+      }),
+      dangerLevel: new FormControl<number | null>(null, {
+        validators: [
+          Validators.required,
+          validNumberValidator(),
+          Validators.pattern(/^\d+$/),
+          Validators.min(DANGER_LEVEL_MIN),
+          Validators.max(DANGER_LEVEL_MAX),
+        ],
       }),
       description: new FormControl('', {
         nonNullable: true,
@@ -124,6 +146,12 @@ export class PollutionForm implements OnInit, OnChanges {
     return this.currentStep === this.steps.length - 1;
   }
 
+  /** Indice saisi, ou `null` tant qu'il est invalide : l'aperçu du niveau reste neutre. */
+  get validDangerLevel(): number | null {
+    const control = this.what.dangerLevel;
+    return control.valid ? control.value : null;
+  }
+
   get photoFileError(): string | null {
     const control = this.evidence.photoFile;
     if (!control.touched || !control.errors) {
@@ -143,10 +171,19 @@ export class PollutionForm implements OnInit, OnChanges {
 
   ngOnInit(): void {
     if (this.initialValue) {
-      const { title, type, description, observedAt, place, latitude, longitude, photoUrl } =
-        this.initialValue;
+      const {
+        title,
+        type,
+        dangerLevel,
+        description,
+        observedAt,
+        place,
+        latitude,
+        longitude,
+        photoUrl,
+      } = this.initialValue;
       this.form.setValue({
-        what: { title, type, description },
+        what: { title, type, dangerLevel, description },
         where: { observedAt, place, latitude, longitude },
         evidence: {
           source: this.initialValue.photoFile ? 'upload' : 'url',
@@ -216,6 +253,7 @@ export class PollutionForm implements OnInit, OnChanges {
     return {
       title: what.title.trim(),
       type: what.type as PollutionType,
+      dangerLevel: Number(what.dangerLevel),
       description: what.description.trim(),
       observedAt: where.observedAt,
       place: where.place.trim(),

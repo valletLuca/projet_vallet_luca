@@ -4,6 +4,9 @@ export const POLLUTION_TYPES = ["plastique", "chimique", "depot-sauvage", "eau",
 
 export type PollutionType = (typeof POLLUTION_TYPES)[number];
 
+export const DANGER_LEVEL_MIN = 0;
+export const DANGER_LEVEL_MAX = 999;
+
 export interface PollutionAttributes {
   id: number;
   title: string;
@@ -13,12 +16,13 @@ export interface PollutionAttributes {
   place: string;
   latitude: number;
   longitude: number;
+  dangerLevel: number | null;
   photoUrl: string | null;
   createdAt: Date;
 }
 
 export interface PollutionCreationAttributes
-  extends Optional<PollutionAttributes, "id" | "photoUrl" | "createdAt"> {}
+  extends Optional<PollutionAttributes, "id" | "dangerLevel" | "photoUrl" | "createdAt"> {}
 
 export interface PollutionInstance
   extends Model<PollutionAttributes, PollutionCreationAttributes>,
@@ -68,6 +72,11 @@ export default function definePollutions(sequelize: Sequelize, _seq?: typeof Seq
         type: DataTypes.DOUBLE,
         allowNull: false,
         validate: { min: -180, max: 180 }
+      },
+      dangerLevel: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        validate: { isInt: true, min: DANGER_LEVEL_MIN, max: DANGER_LEVEL_MAX }
       },
       photoUrl: {
         type: DataTypes.TEXT,

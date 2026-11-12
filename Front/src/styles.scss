@@ -195,6 +195,18 @@ body {
   white-space: nowrap;
 }
 
+.level-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text);
+  background: var(--color-surface);
+  border: 1px solid rgb(22 27 46 / 0.12);
+  border-radius: 99px;
+  white-space: nowrap;
+}
+
 .page {
   display: grid;
   justify-items: center;

@@ -51,6 +51,39 @@
     </app-form-field>
 
     <app-form-field
+      label="Indice de dangerosité"
+      fieldId="dangerLevel"
+      [control]="what.dangerLevel"
+      [messages]="{
+        required: 'L\'indice de dangerosité est requis.',
+        invalidNumber: 'L\'indice doit être un nombre valide.',
+        pattern: 'L\'indice doit être un nombre entier.',
+        min: 'L\'indice doit être compris entre ' + dangerLevelMin + ' et ' + dangerLevelMax + '.',
+        max: 'L\'indice doit être compris entre ' + dangerLevelMin + ' et ' + dangerLevelMax + '.',
+      }"
+    >
+      <input
+        id="dangerLevel"
+        type="number"
+        step="1"
+        inputmode="numeric"
+        class="field__input"
+        placeholder=" "
+        [min]="dangerLevelMin"
+        [max]="dangerLevelMax"
+        formControlName="dangerLevel"
+        [attr.aria-invalid]="what.dangerLevel.invalid && what.dangerLevel.touched"
+        aria-describedby="dangerLevel-error dangerLevel-level"
+      />
+    </app-form-field>
+    <p class="danger-level" id="dangerLevel-level" aria-live="polite">
+      Niveau :
+      <span class="level-badge" [appHighlightPollution]="validDangerLevel">
+        {{ validDangerLevel | pollutionLevel }}
+      </span>
+    </p>
+
+    <app-form-field
       label="Description"
       fieldId="description"
       [control]="what.description"

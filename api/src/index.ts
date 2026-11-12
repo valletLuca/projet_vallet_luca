@@ -1,9 +1,25 @@
+import { DataTypes } from "sequelize";
 import app from "./app";
 import db from "./models";
 import { SEED_POLLUTIONS } from "./models/seed";
 
+// sync() ne crée que les tables absentes : une table déjà en place
+// ne reçoit pas les colonnes ajoutées au modèle depuis.
+async function addMissingColumns(): Promise<void> {
+  const queryInterface = db.sequelize.getQueryInterface();
+  const columns = await queryInterface.describeTable("pollution");
+  if (!columns.danger_level) {
+    await queryInterface.addColumn("pollution", "danger_level", {
+      type: DataTypes.INTEGER,
+      allowNull: true
+    });
+    console.log("Colonne danger_level ajoutée à la table pollution.");
+  }
+}
+
 db.sequelize
   .sync()
+  .then(addMissingColumns)
   .then(async () => {
     console.log("Synced db.");
     try {
