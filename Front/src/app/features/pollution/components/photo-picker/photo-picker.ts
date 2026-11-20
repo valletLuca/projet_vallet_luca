@@ -1,4 +1,12 @@
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnDestroy,
+  Output,
+} from '@angular/core';
 import { formatFileSize } from '../../utils/file-size';
 import { PhotoPreview } from '../photo-preview/photo-preview';
 
@@ -7,6 +15,7 @@ import { PhotoPreview } from '../photo-preview/photo-preview';
   imports: [PhotoPreview],
   templateUrl: './photo-picker.html',
   styleUrl: './photo-picker.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PhotoPicker implements OnChanges, OnDestroy {
   @Input() file: File | null = null;

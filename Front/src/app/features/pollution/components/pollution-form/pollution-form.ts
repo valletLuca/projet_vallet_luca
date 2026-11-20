@@ -1,5 +1,6 @@
 import {
   afterNextRender,
+  ChangeDetectionStrategy,
   Component,
   ElementRef,
   EventEmitter,
@@ -46,6 +47,7 @@ const STEP_TRANSITION_MS = 320;
   ],
   templateUrl: './pollution-form.html',
   styleUrl: './pollution-form.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PollutionForm implements OnInit, OnChanges {
   @Input({ required: true }) steps!: readonly StepperStep[];

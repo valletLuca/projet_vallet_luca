@@ -1,6 +1,6 @@
 <header class="header">
   <div class="header__inner">
-    <a class="header__home" routerLink="/pollutions" [attr.aria-label]="brand.name + ', accueil'">
+    <a class="header__home" routerLink="/" [attr.aria-label]="brand.name + ', accueil'">
       <svg class="header__logo" viewBox="0 0 32 32" aria-hidden="true">
         <rect width="32" height="32" rx="9" />
         <path d="M16 7c3.6 4.4 6 7.9 6 11a6 6 0 01-12 0c0-3.1 2.4-6.6 6-11z" />
@@ -13,26 +13,36 @@
     </a>
 
     <nav class="header__nav" aria-label="Navigation principale">
-      <a
-        class="header__link"
-        routerLink="/pollutions"
-        routerLinkActive="header__link--active"
-        [routerLinkActiveOptions]="{ exact: true }"
-        ariaCurrentWhenActive="page"
-      >
-        Signalements
-      </a>
-      <a
-        class="header__link"
-        routerLink="/utilisateurs"
-        routerLinkActive="header__link--active"
-        ariaCurrentWhenActive="page"
-      >
-        Utilisateurs
-      </a>
       @if (currentUser(); as user) {
+        <a
+          class="header__link"
+          routerLink="/pollutions"
+          routerLinkActive="header__link--active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          ariaCurrentWhenActive="page"
+        >
+          Signalements
+        </a>
+        <a
+          class="header__link"
+          routerLink="/utilisateurs"
+          routerLinkActive="header__link--active"
+          ariaCurrentWhenActive="page"
+        >
+          Utilisateurs
+        </a>
         <span class="header__user">{{ user.firstName }}</span>
         <button type="button" class="header__link header__logout" (click)="logout()">Déconnexion</button>
+        <a
+          class="btn btn--primary btn--sm header__cta"
+          routerLink="/pollutions/nouvelle"
+          ariaCurrentWhenActive="page"
+          routerLinkActive
+          aria-label="Déclarer une pollution"
+        >
+          <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 3v10M3 8h10" /></svg>
+          <span class="header__cta-label">Déclarer</span>
+        </a>
       } @else {
         <a
           class="header__link"
@@ -42,17 +52,15 @@
         >
           Connexion
         </a>
+        <a
+          class="header__link"
+          routerLink="/inscription"
+          routerLinkActive="header__link--active"
+          ariaCurrentWhenActive="page"
+        >
+          Inscription
+        </a>
       }
-      <a
-        class="btn btn--primary btn--sm header__cta"
-        routerLink="/pollutions/nouvelle"
-        ariaCurrentWhenActive="page"
-        routerLinkActive
-        aria-label="Déclarer une pollution"
-      >
-        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 3v10M3 8h10" /></svg>
-        <span class="header__cta-label">Déclarer</span>
-      </a>
     </nav>
   </div>
 </header>

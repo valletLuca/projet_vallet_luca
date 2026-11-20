@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+} from '@angular/core';
 import { Pollution, pollutionTypeLabel, PollutionType } from '../../models/pollution.model';
 import { BOUNDS, CORSICA, isInside, LonLat, MAINLAND } from './france-geometry';
 
@@ -49,6 +56,7 @@ const DOTS: readonly Point[] = (() => {
   selector: 'app-pollution-map',
   templateUrl: './pollution-map.html',
   styleUrl: './pollution-map.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PollutionMap implements OnChanges {
   @Input({ required: true }) pollutions!: readonly Pollution[];

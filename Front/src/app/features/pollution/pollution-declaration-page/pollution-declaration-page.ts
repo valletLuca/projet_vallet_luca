@@ -1,5 +1,13 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, DestroyRef, inject, Input, OnChanges, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DestroyRef,
+  inject,
+  Input,
+  OnChanges,
+  signal,
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router, RouterLink } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -18,6 +26,7 @@ type LoadStatus = 'loading' | 'ready' | 'not-found' | 'error';
   imports: [RouterLink, PageState, StepperHeader, PollutionForm],
   templateUrl: './pollution-declaration-page.html',
   styleUrl: './pollution-declaration-page.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PollutionDeclarationPage implements OnChanges {
   @Input() id?: string;

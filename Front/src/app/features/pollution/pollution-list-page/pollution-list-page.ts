@@ -1,4 +1,13 @@
-import { Component, computed, DestroyRef, inject, OnInit, signal, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  DestroyRef,
+  inject,
+  OnInit,
+  signal,
+  ViewChild,
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router, RouterLink } from '@angular/router';
 import { ConfirmDialog } from '../../../shared/ui/confirm-dialog/confirm-dialog';
@@ -37,6 +46,7 @@ const VIEW_STORAGE_KEY = 'sillage.pollutions.view';
   ],
   templateUrl: './pollution-list-page.html',
   styleUrl: './pollution-list-page.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PollutionListPage implements OnInit {
   private readonly pollutionService = inject(PollutionService);
