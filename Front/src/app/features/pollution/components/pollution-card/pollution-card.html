@@ -12,7 +12,13 @@
   </div>
 
   <div class="card-item__body">
-    <span class="badge">{{ typeLabel }}</span>
+    <p class="card-item__badges">
+      <span class="badge">{{ typeLabel }}</span>
+      <span class="level-badge" [appHighlightPollution]="pollution.dangerLevel" title="Niveau de dangerosité">
+        <span class="visually-hidden">Dangerosité :</span>
+        {{ pollution.dangerLevel | pollutionLevel }}
+      </span>
+    </p>
     <h2 class="card-item__title">
       <a class="card-item__link" [routerLink]="['/pollutions', pollution.id]">{{ pollution.title }}</a>
     </h2>

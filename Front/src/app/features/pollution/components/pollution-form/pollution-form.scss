@@ -38,6 +38,15 @@
   color: var(--color-muted);
 }
 
+.danger-level {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: -8px 0 20px;
+  font-size: 14px;
+  color: var(--color-muted);
+}
+
 .coordinates {
   display: grid;
   grid-template-columns: 1fr 1fr;

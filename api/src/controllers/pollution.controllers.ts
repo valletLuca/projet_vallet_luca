@@ -1,6 +1,11 @@
 import { Request, Response } from "express";
 import db from "../models";
-import { POLLUTION_TYPES, PollutionCreationAttributes } from "../models/pollutions.model";
+import {
+  DANGER_LEVEL_MAX,
+  DANGER_LEVEL_MIN,
+  POLLUTION_TYPES,
+  PollutionCreationAttributes
+} from "../models/pollutions.model";
 import { parseId, sendSaveError, sendServerError } from "../utils/http";
 
 const Pollutions = db.pollutions;
@@ -102,8 +107,9 @@ function readFields(req: Request): PollutionCreationAttributes | string {
   const description = text("description");
   const observedAt = text("observedAt");
   const place = text("place");
-  const latitude = coordinate(body.latitude);
-  const longitude = coordinate(body.longitude);
+  const latitude = toNumber(body.latitude);
+  const longitude = toNumber(body.longitude);
+  const dangerLevel = toNumber(body.dangerLevel);
 
   if (!title || !description || !place) {
     return "Les champs title, description et place sont obligatoires.";
@@ -116,6 +122,9 @@ function readFields(req: Request): PollutionCreationAttributes | string {
   }
   if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) {
     return "latitude et longitude doivent être des nombres.";
+  }
+  if (!Number.isInteger(dangerLevel) || dangerLevel < DANGER_LEVEL_MIN || dangerLevel > DANGER_LEVEL_MAX) {
+    return `dangerLevel doit être un entier compris entre ${DANGER_LEVEL_MIN} et ${DANGER_LEVEL_MAX}.`;
   }
 
   const photoUrl = req.file
@@ -130,11 +139,12 @@ function readFields(req: Request): PollutionCreationAttributes | string {
     place,
     latitude,
     longitude,
+    dangerLevel,
     photoUrl
   };
 }
 
-function coordinate(value: unknown): number {
+function toNumber(value: unknown): number {
   if (typeof value === "number") {
     return value;
   }

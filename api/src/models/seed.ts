@@ -10,6 +10,7 @@ export const SEED_POLLUTIONS: PollutionCreationAttributes[] = [
     place: "Marseille",
     latitude: 43.259724,
     longitude: 5.374963,
+    dangerLevel: 35,
     createdAt: new Date("2026-10-18T09:12:00.000Z")
   },
   {
@@ -21,6 +22,7 @@ export const SEED_POLLUTIONS: PollutionCreationAttributes[] = [
     place: "Strasbourg",
     latitude: 48.573405,
     longitude: 7.752111,
+    dangerLevel: 72,
     createdAt: new Date("2026-10-15T16:40:00.000Z")
   },
   {
@@ -32,6 +34,7 @@ export const SEED_POLLUTIONS: PollutionCreationAttributes[] = [
     place: "Fontainebleau",
     latitude: 48.404676,
     longitude: 2.70162,
+    dangerLevel: 48,
     createdAt: new Date("2026-10-10T07:55:00.000Z")
   },
   {
@@ -43,6 +46,7 @@ export const SEED_POLLUTIONS: PollutionCreationAttributes[] = [
     place: "Lyon",
     latitude: 45.722158,
     longitude: 4.832287,
+    dangerLevel: 110,
     createdAt: new Date("2026-09-28T18:05:00.000Z")
   },
   {
@@ -54,6 +58,7 @@ export const SEED_POLLUTIONS: PollutionCreationAttributes[] = [
     place: "Rouen",
     latitude: 49.431236,
     longitude: 1.072412,
+    dangerLevel: 160,
     createdAt: new Date("2026-09-22T10:30:00.000Z")
   },
   {
@@ -65,6 +70,7 @@ export const SEED_POLLUTIONS: PollutionCreationAttributes[] = [
     place: "Nantes",
     latitude: 47.218371,
     longitude: -1.553621,
+    dangerLevel: 15,
     createdAt: new Date("2026-09-12T08:20:00.000Z")
   }
 ];

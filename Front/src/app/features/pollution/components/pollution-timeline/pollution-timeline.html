@@ -30,6 +30,10 @@
               </h3>
               <p class="entry__meta">
                 <span class="badge">{{ typeLabel(pollution.type) }}</span>
+                <span class="level-badge" [appHighlightPollution]="pollution.dangerLevel" title="Niveau de dangerosité">
+                  <span class="visually-hidden">Dangerosité :</span>
+                  {{ pollution.dangerLevel | pollutionLevel }}
+                </span>
                 <span>{{ pollution.place }}</span>
                 <span class="entry__coords">
                   {{ pollution.latitude | number: '1.3-3' }}, {{ pollution.longitude | number: '1.3-3' }}

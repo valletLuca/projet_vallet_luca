@@ -35,6 +35,17 @@
         <dd class="recap__description">{{ pollution.description }}</dd>
       </div>
       <div class="recap__item">
+        <dt>Dangerosité</dt>
+        <dd class="recap__danger">
+          <span class="level-badge" [appHighlightPollution]="pollution.dangerLevel">
+            {{ pollution.dangerLevel | pollutionLevel }}
+          </span>
+          @if (pollution.dangerLevel !== null) {
+            <span class="recap__mono">Indice {{ pollution.dangerLevel }}</span>
+          }
+        </dd>
+      </div>
+      <div class="recap__item">
         <dt>Lieu</dt>
         <dd>{{ pollution.place }}</dd>
       </div>

@@ -11,6 +11,9 @@ export type PollutionType = (typeof POLLUTION_TYPES)[number]['value'];
 
 export type PhotoSource = 'upload' | 'url';
 
+export const DANGER_LEVEL_MIN = 0;
+export const DANGER_LEVEL_MAX = 999;
+
 export interface PollutionDeclaration {
   title: string;
   type: PollutionType;
@@ -19,6 +22,8 @@ export interface PollutionDeclaration {
   place: string;
   latitude: number;
   longitude: number;
+  /** Indice de dangerosité ; `null` pour les signalements créés avant son introduction. */
+  dangerLevel: number | null;
   photoUrl: string | null;
   photoFile: File | null;
 }

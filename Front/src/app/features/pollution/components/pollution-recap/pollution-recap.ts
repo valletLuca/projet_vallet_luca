@@ -1,11 +1,13 @@
 import { DatePipe, DecimalPipe } from '@angular/common';
 import { Component, Input } from '@angular/core';
+import { HighlightPollutionDirective } from '../../../../shared/directives/highlight-pollution.directive';
+import { PollutionLevelPipe } from '../../../../shared/pipes/pollution-level.pipe';
 import { Pollution, pollutionTypeLabel } from '../../models/pollution.model';
 import { PhotoPreview } from '../photo-preview/photo-preview';
 
 @Component({
   selector: 'app-pollution-recap',
-  imports: [DatePipe, DecimalPipe, PhotoPreview],
+  imports: [DatePipe, DecimalPipe, PhotoPreview, PollutionLevelPipe, HighlightPollutionDirective],
   templateUrl: './pollution-recap.html',
   styleUrl: './pollution-recap.scss',
 })
