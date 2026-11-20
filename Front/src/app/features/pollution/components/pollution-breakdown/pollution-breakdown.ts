@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+} from '@angular/core';
 import { POLLUTION_TYPES, Pollution, PollutionType } from '../../models/pollution.model';
 
 interface TypeShare {
@@ -11,6 +18,7 @@ interface TypeShare {
   selector: 'app-pollution-breakdown',
   templateUrl: './pollution-breakdown.html',
   styleUrl: './pollution-breakdown.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PollutionBreakdown implements OnChanges {
   @Input({ required: true }) pollutions!: readonly Pollution[];

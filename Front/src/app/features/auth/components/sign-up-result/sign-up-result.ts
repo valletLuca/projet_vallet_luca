@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 @Component({
@@ -6,6 +6,7 @@ import { RouterLink } from '@angular/router';
   imports: [RouterLink],
   templateUrl: './sign-up-result.html',
   styleUrl: './sign-up-result.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SignUpResult {
   @Input({ required: true }) firstName!: string;

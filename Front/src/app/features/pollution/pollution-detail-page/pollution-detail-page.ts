@@ -1,5 +1,13 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, DestroyRef, inject, Input, OnChanges, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DestroyRef,
+  inject,
+  Input,
+  OnChanges,
+  signal,
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router, RouterLink } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -23,6 +31,7 @@ const SAVED_MESSAGES: Record<SavedState, string> = {
   imports: [RouterLink, ConfirmDialog, PageState, PollutionRecap],
   templateUrl: './pollution-detail-page.html',
   styleUrl: './pollution-detail-page.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PollutionDetailPage implements OnChanges {
   @Input({ required: true }) id!: string;

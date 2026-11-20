@@ -1,9 +1,18 @@
 import { DatePipe } from '@angular/common';
-import { Component, computed, DestroyRef, inject, OnInit, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  DestroyRef,
+  inject,
+  OnInit,
+  signal,
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { ConfirmDialog } from '../../../shared/ui/confirm-dialog/confirm-dialog';
 import { PageState } from '../../../shared/ui/page-state/page-state';
+import { SIGN_IN_PATH } from '../guards/auth.guard';
 import { User, userFullName } from '../models/user.model';
 import { AuthService } from '../services/auth.service';
 import { UserService } from '../services/user.service';
@@ -15,10 +24,12 @@ type LoadStatus = 'loading' | 'ready' | 'error';
   imports: [DatePipe, RouterLink, ConfirmDialog, PageState],
   templateUrl: './user-list-page.html',
   styleUrl: './user-list-page.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserListPage implements OnInit {
   private readonly userService = inject(UserService);
   private readonly authService = inject(AuthService);
+  private readonly router = inject(Router);
   private readonly destroyRef = inject(DestroyRef);
 
   protected readonly fullName = userFullName;
@@ -76,6 +87,7 @@ export class UserListPage implements OnInit {
         next: () => {
           if (user.id === this.currentUser()?.id) {
             this.authService.logout();
+            this.router.navigate([SIGN_IN_PATH]);
           }
           this.users.update((list) => list.filter((u) => u.id !== user.id));
           this.notice.set(`Le compte « ${userFullName(user)} » a été supprimé.`);

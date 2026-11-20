@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { HighlightPollutionDirective } from '../../../../shared/directives/highlight-pollution.directive';
 import { PollutionLevelPipe } from '../../../../shared/pipes/pollution-level.pipe';
@@ -11,6 +11,7 @@ import { PhotoPreview } from '../photo-preview/photo-preview';
   imports: [DatePipe, RouterLink, PhotoPreview, PollutionLevelPipe, HighlightPollutionDirective],
   templateUrl: './pollution-card.html',
   styleUrl: './pollution-card.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PollutionCard {
   @Input({ required: true }) pollution!: Pollution;

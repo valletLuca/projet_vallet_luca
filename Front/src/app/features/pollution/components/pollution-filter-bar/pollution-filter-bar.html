@@ -34,7 +34,7 @@
       type="date"
       class="filters__input"
       formControlName="from"
-      [max]="form.controls.to.value || null"
+      [max]="value().to || null"
     />
   </label>
 
@@ -44,11 +44,11 @@
       type="date"
       class="filters__input"
       formControlName="to"
-      [min]="form.controls.from.value || null"
+      [min]="value().from || null"
     />
   </label>
 
-  <button type="button" class="filters__reset" [disabled]="!active" (click)="reset()">
+  <button type="button" class="filters__reset" [disabled]="!active()" (click)="reset()">
     <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8" /></svg>
     Réinitialiser
   </button>
