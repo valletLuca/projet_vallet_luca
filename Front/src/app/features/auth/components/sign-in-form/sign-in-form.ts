@@ -1,4 +1,13 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { SIGN_IN_ERROR_MESSAGES } from '../../../../const/messages.const';
@@ -10,6 +19,7 @@ import { SignInErrorReason, SignInRequest } from '../../models/user.model';
   imports: [ReactiveFormsModule, RouterLink, FormField],
   templateUrl: './sign-in-form.html',
   styleUrl: '../sign-up-form/sign-up-form.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SignInForm implements OnInit, OnChanges {
   @Input() email = '';

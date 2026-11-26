@@ -1,31 +1,38 @@
 import { inject } from '@angular/core';
 import { Routes } from '@angular/router';
-import { SignInPage } from './features/auth/sign-in-page/sign-in-page';
+import { authGuard, SIGN_IN_PATH } from './features/auth/guards/auth.guard';
+import { guestGuard, HOME_PATH } from './features/auth/guards/guest.guard';
 import { AuthService } from './features/auth/services/auth.service';
-import { SignUpPage } from './features/auth/sign-up-page/sign-up-page';
-import { UserListPage } from './features/auth/user-list-page/user-list-page';
-import { PollutionDeclarationPage } from './features/pollution/pollution-declaration-page/pollution-declaration-page';
-import { PollutionDetailPage } from './features/pollution/pollution-detail-page/pollution-detail-page';
-import { PollutionListPage } from './features/pollution/pollution-list-page/pollution-list-page';
 
-const landingPage = () => (inject(AuthService).currentUser() ? '/pollutions' : '/connexion');
+const landingPage = () => (inject(AuthService).currentUser() ? HOME_PATH : SIGN_IN_PATH);
 
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: landingPage },
-  { path: 'pollutions', title: 'Signalements · Sillage', component: PollutionListPage },
   {
-    path: 'pollutions/nouvelle',
-    title: 'Déclarer une pollution · Sillage',
-    component: PollutionDeclarationPage,
+    path: 'pollutions',
+    canMatch: [authGuard],
+    loadChildren: () =>
+      import('./features/pollution/pollution.routes').then((m) => m.POLLUTION_ROUTES),
   },
-  { path: 'pollutions/:id', title: 'Détail du signalement · Sillage', component: PollutionDetailPage },
   {
-    path: 'pollutions/:id/modifier',
-    title: 'Modifier le signalement · Sillage',
-    component: PollutionDeclarationPage,
+    path: 'utilisateurs',
+    title: 'Utilisateurs · Sillage',
+    canMatch: [authGuard],
+    loadComponent: () =>
+      import('./features/auth/user-list-page/user-list-page').then((m) => m.UserListPage),
   },
-  { path: 'utilisateurs', title: 'Utilisateurs · Sillage', component: UserListPage },
-  { path: 'inscription', title: 'Créer un compte · Sillage', component: SignUpPage },
-  { path: 'connexion', title: 'Connexion · Sillage', component: SignInPage },
+  {
+    path: 'inscription',
+    title: 'Créer un compte · Sillage',
+    loadComponent: () =>
+      import('./features/auth/sign-up-page/sign-up-page').then((m) => m.SignUpPage),
+  },
+  {
+    path: 'connexion',
+    title: 'Connexion · Sillage',
+    canMatch: [guestGuard],
+    loadComponent: () =>
+      import('./features/auth/sign-in-page/sign-in-page').then((m) => m.SignInPage),
+  },
   { path: '**', redirectTo: landingPage },
 ];

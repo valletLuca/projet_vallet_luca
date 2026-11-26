@@ -1,5 +1,7 @@
 import {
+  ChangeDetectionStrategy,
   Component,
+  computed,
   DestroyRef,
   ElementRef,
   EventEmitter,
@@ -9,7 +11,7 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs';
 import { EMPTY_FILTERS, hasActiveFilters, PollutionFilters } from '../../models/pollution-filters';
@@ -22,6 +24,7 @@ const SEARCH_DEBOUNCE_MS = 150;
   imports: [ReactiveFormsModule],
   templateUrl: './pollution-filter-bar.html',
   styleUrl: './pollution-filter-bar.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PollutionFilterBar implements OnInit {
   @Output() filtersChange = new EventEmitter<PollutionFilters>();
@@ -40,9 +43,17 @@ export class PollutionFilterBar implements OnInit {
     to: new FormControl('', { nonNullable: true }),
   });
 
-  get active(): boolean {
-    return hasActiveFilters(this.form.getRawValue());
-  }
+  /**
+   * Valeur courante du formulaire sous forme de signal : le parent peut la modifier
+   * (`reset()`, `toggleType()`) sans passer par le template de ce composant OnPush,
+   * le signal garantit alors le rafraîchissement du bouton et des bornes de dates.
+   */
+  protected readonly value = toSignal(
+    this.form.valueChanges.pipe(map(() => this.form.getRawValue())),
+    { initialValue: this.form.getRawValue() },
+  );
+
+  protected readonly active = computed(() => hasActiveFilters(this.value()));
 
   ngOnInit(): void {
     this.form.valueChanges

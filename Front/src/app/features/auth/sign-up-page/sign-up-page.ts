@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
 import { finalize } from 'rxjs';
@@ -11,6 +11,7 @@ import { AuthService } from '../services/auth.service';
   selector: 'app-sign-up-page',
   imports: [RouterLink, SignUpForm, SignUpResult],
   templateUrl: './sign-up-page.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SignUpPage {
   private readonly authService = inject(AuthService);

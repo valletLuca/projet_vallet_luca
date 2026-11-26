@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 export type PageStateKind = 'empty' | 'search' | 'error';
 
@@ -6,6 +6,7 @@ export type PageStateKind = 'empty' | 'search' | 'error';
   selector: 'app-page-state',
   templateUrl: './page-state.html',
   styleUrl: './page-state.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PageState {
   @Input() kind: PageStateKind = 'empty';

@@ -1,4 +1,12 @@
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { SIGN_UP_ERROR_MESSAGES } from '../../../../const/messages.const';
@@ -14,6 +22,7 @@ import { passwordStrengthValidator } from '../../validators/password-strength.va
   imports: [ReactiveFormsModule, FormField],
   templateUrl: './sign-up-form.html',
   styleUrl: './sign-up-form.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SignUpForm implements OnChanges {
   @Input() pending = false;
@@ -69,7 +78,7 @@ export class SignUpForm implements OnChanges {
   constructor() {
     this.controls.password.valueChanges
       .pipe(takeUntilDestroyed())
-      .subscribe(() => this.controls.confirmPassword.updateValueAndValidity({ emitEvent: false }));
+      .subscribe(() => this.controls.confirmPassword.updateValueAndValidity());
   }
 
   get passwordRules() {

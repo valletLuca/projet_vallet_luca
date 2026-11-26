@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 
 type PreviewStatus = 'empty' | 'loading' | 'loaded' | 'error';
 
@@ -6,6 +6,7 @@ type PreviewStatus = 'empty' | 'loading' | 'loaded' | 'error';
   selector: 'app-photo-preview',
   templateUrl: './photo-preview.html',
   styleUrl: './photo-preview.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PhotoPreview implements OnChanges {
   @Input() url: string | null = null;

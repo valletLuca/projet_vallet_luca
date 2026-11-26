@@ -1,5 +1,12 @@
 import { DatePipe, DecimalPipe } from '@angular/common';
-import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+} from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { HighlightPollutionDirective } from '../../../../shared/directives/highlight-pollution.directive';
 import { PollutionLevelPipe } from '../../../../shared/pipes/pollution-level.pipe';
@@ -15,6 +22,7 @@ interface MonthGroup {
   imports: [DatePipe, DecimalPipe, RouterLink, PollutionLevelPipe, HighlightPollutionDirective],
   templateUrl: './pollution-timeline.html',
   styleUrl: './pollution-timeline.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PollutionTimeline implements OnChanges {
   @Input({ required: true }) pollutions!: readonly Pollution[];

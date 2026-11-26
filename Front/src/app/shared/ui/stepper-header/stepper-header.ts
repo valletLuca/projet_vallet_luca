@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
 export interface StepperStep {
   label: string;
@@ -10,6 +10,7 @@ export interface StepperStep {
   selector: 'app-stepper-header',
   templateUrl: './stepper-header.html',
   styleUrl: './stepper-header.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class StepperHeader {
   @Input({ required: true }) steps!: readonly StepperStep[];
